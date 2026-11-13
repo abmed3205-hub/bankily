@@ -5,290 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Bankily - لوحة القيادة</title>
+    <title>Bankily - تسجيل الدخول</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        /* جلب الخطوط من جوجل - خط مشابه للأصلي */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-
-        :root {
-            --primary-bg: #15b7c8; /* لون الهيدر الأصلي */
-            --main-bg: #f8fafb; /* لون الخلفية الفاتح */
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            --text-dark: #333333;
-            --text-light: #ffffff;
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { width: 100%; height: 100%; background-color: #ffffff; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        
+        .app-screen { 
+            position: relative; 
+            width: 100%; 
+            max-width: 430px; 
+            height: 100vh; 
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        
+        .app-screen img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: fill; 
+            display: block; 
         }
-
-        body {
-            background-color: var(--main-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            /* التعامل مع المساحات الآمنة في النوتش */
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        /* حاوية التطبيق بحجم الهاتف المحمول */
-        .app-container {
-            width: 100%;
-            max-width: 414px; /* حجم أيفون بلس */
-            height: 100vh;
-            max-height: 896px;
-            background-color: var(--main-bg);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
-        }
-
-        /* تنسيق الهيدر العلوي - مطابق تماماً */
-        .app-header {
-            background-color: var(--primary-bg);
-            color: var(--text-light);
-            padding: 15px 20px 25px 20px;
-            text-align: center;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            position: relative;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .header-top h1 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        /* زر القائمة الدائري المتطابق */
-        .menu-btn {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        /* زر تفاعلي شفاف فوق زر تسجيل الدخول في صورتك */
+        .hotspot-login {
+            position: absolute;
+            top: 55%;     /* عدل هذه النسبة حسب مكان زر الدخول في صورتك */
+            left: 7%;     /* موقع الزر أفقياً */
+            width: 86%;   /* عرض منطقة النقر */
+            height: 52px; /* ارتفاع منطقة النقر */
+            background: transparent;
             cursor: pointer;
+            border: none;
         }
-
-        .menu-btn img {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* شبكة الإجراءات الثلاثية في الهيدر */
-        .header-actions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        /* الكارت المتطابق داخل الهيدر */
-        .header-card {
-            background-color: rgba(255, 255, 255, 0.12);
-            border-radius: 18px;
-            padding: 20px 10px;
-            text-decoration: none;
-            color: var(--text-light);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .header-card img {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 12px;
-        }
-
-        .header-card span {
-            font-size: 13px;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        /* محتوى الشبكة الرئيسي السفلي */
-        .app-content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        /* كروت الخدمات المتطابقة تماماً - بدون بوردر */
-        .service-card {
-            background-color: var(--text-light);
-            border-radius: 20px;
-            padding: 20px 10px;
-            text-decoration: none;
-            color: var(--text-dark);
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            aspect-ratio: 1 / 1; /* كارت مربع */
-            justify-content: center;
-        }
-
-        .service-card img {
-            width: 38px;
-            height: 38px;
-            margin-bottom: 15px;
-        }
-
-        .service-card span {
-            font-size: 12.5px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        /* شريط التنقل السفلي المتطابق */
-        .bottom-nav {
-            background-color: var(--text-light);
-            border-top: 1px solid #f1f1f1;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px env(safe-area-inset-bottom);
-            height: 70px;
-        }
-
-        .nav-item {
-            text-decoration: none;
-            color: #999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .nav-item img {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 5px;
-        }
-
-        .nav-item.active {
-            color: var(--primary-bg);
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- الهيدر المتطابق -->
-        <header class="app-header">
-            <div class="header-top">
-                <!-- جلب أيقونة القائمة الأصلية -->
-                <button class="menu-btn"><img src="https://img.icons8.com/m/androidL/24/FFFFFF/menu.png" alt="القائمة"></button>
-                <h1>لوحة القيادة</h1>
-                <div style="width: 40px;"></div>
-            </div>
+    <div class="app-screen">
+        <!-- عرض صورة واجهة تسجيل الدخول الأصلية -->
+        <img src="login.png" alt="Login">
 
-            <!-- الكروت الثلاثة المتطابقة بالهيدر -->
-            <div class="header-actions">
-                <!-- تم استبدال الفونت أوصم بأيقونات أصلية متطابقة -->
-                <a href="#" class="header-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/FFFFFF/money-bill.png" alt="تسديد">
-                    <span>تسديد مشتريات</span>
-                </a>
-                <a href="send-money.html" class="header-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/FFFFFF/data-in-both-directions.png" alt="تحويل">
-                    <span>تحويل الأموال</span>
-                </a>
-                <a href="transfer.html" class="header-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/FFFFFF/wallet.png" alt="حسابي">
-                    <span>حسابي</span>
-                </a>
-            </div>
-        </header>
-
-        <!-- الشبكة السفلية المتطابقة -->
-        <main class="app-content">
-            <div class="services-grid">
-                <!-- الصف الأول -->
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/cheque.png" alt="شيكات">
-                    <span>طلب دفتر شيكات</span>
-                </a>
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/invoice.png" alt="فواتير">
-                    <span>تسديد الفواتير</span>
-                </a>
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/iphone.png" alt="هاتف">
-                    <span>تعبئة رصيد الهاتف</span>
-                </a>
-
-                <!-- الصف الثاني -->
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/credit-card-2.png" alt="بطاقات">
-                    <span>البطاقات البنكية</span>
-                </a>
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/museum.png" alt="سحب">
-                    <span>سحب النقود</span>
-                </a>
-                <a href="#" class="service-card">
-                    <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/shopping-cart.png" alt="ب باي">
-                    <span>ب-باي</span>
-                </a>
-
-                <!-- الصف الثالث (خانة واحدة) -->
-                <div style="grid-column: 3;"> <!-- لوضعها في العمود الثالث كما بالصورة -->
-                    <a href="#" class="service-card">
-                        <img src="https://img.icons8.com/fluency-systems-filled/48/15b7c8/mail.png" alt="جيمتيل">
-                        <span>جيمتيل</span>
-                    </a>
-                </div>
-            </div>
-        </main>
-
-        <!-- شريط التنقل السفلي المتطابق -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item">
-                <img src="https://img.icons8.com/fluency-systems-filled/24/999999/ask-question.png" alt="مساعدة">
-                <span>المساعدة</span>
-            </a>
-            <a href="#" class="nav-item">
-                <img src="https://img.icons8.com/fluency-systems-filled/24/999999/alarm.png" alt="إشعارات">
-                <span>الإشعارات</span>
-            </a>
-            <a href="#" class="nav-item">
-                <img src="https://img.icons8.com/fluency-systems-filled/24/999999/star.png" alt="مفضلة">
-                <span>المفضلة</span>
-            </a>
-            <a href="index.html" class="nav-item active">
-                <img src="https://img.icons8.com/fluency-systems-filled/24/15b7c8/home.png" alt="رئيسية">
-                <span>الرئيسية</span>
-            </a>
-        </nav>
+        <!-- رابط شفاف يوجه المستخدم إلى لوحة القيادة dashboard.html عند الضغط على زر الدخول -->
+        <a href="dashboard.html" class="hotspot-login"></a>
     </div>
 
 </body>
