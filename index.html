@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,20 +22,19 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    direction: ltr;
   }
 
   /* الهيدر العلوي */
   .header { background: var(--primary); color: #fff; padding: 12px 14px 16px; }
   .header-top {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px; direction: rtl;
+    margin-bottom: 18px;
   }
   .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
   .menu-btn { background: none; border: 0; color: #fff; font-size: 26px; cursor: pointer; line-height: 1; }
   
-  /* الترتيب الصحيح 100% مطابق للصورة الرسمية: حسابي (يمين)، تحويل (وسط)، تسديد مشتريات (يسار) */
-  .quick { display: flex; justify-content: space-between; padding: 0 2px; direction: rtl; }
+  /* الترتيب اليدوي الصحيح: حسابي (يمين)، تحويل الأموال (وسط)، تسديد مشتريات (يسار) */
+  .quick { display: flex; justify-content: space-between; padding: 0 2px; }
   .quick a, .quick div {
     display: flex; flex-direction: column; align-items: center;
     gap: 6px; color: #fff; text-decoration: none; font-size: 12px; text-align: center; width: 32%; cursor: pointer;
@@ -51,7 +50,6 @@
   .grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 8px; padding: 12px; flex: 1; align-content: start;
-    direction: rtl;
   }
   .card {
     border: 1px solid var(--border); border-radius: 6px; background: #fff;
@@ -74,7 +72,7 @@
   /* الشريط السفلي */
   .tabbar {
     display: flex; border-top: 1px solid #e5e5e5; background: #fff;
-    position: sticky; bottom: 0; padding: 8px 0 10px; direction: rtl;
+    position: sticky; bottom: 0; padding: 8px 0 10px;
   }
   .tab {
     flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -89,13 +87,13 @@
 
   <header class="header">
     <div class="header-top">
-      <button class="menu-btn" aria-label="القائمة">&#9776;</button>
-      <h1>لوحة القيادة</h1>
       <div style="width: 26px;"></div>
+      <h1>لوحة القيادة</h1>
+      <button class="menu-btn" aria-label="القائمة">&#9776;</button>
     </div>
     <nav class="quick">
-      <!-- 1. حسابي (في أقصى اليمين تماماً مثل الأصل) -->
-      <div onclick="alert('حسابي قيد الانشاء')">
+      <!-- 1. حسابي (في اليمين تماماً) -->
+      <div onclick="alert('حسابي')">
         <span class="circle">
           <svg viewBox="0 0 48 48"><path d="M10 8h28v32H10z"/><path d="M16 16h16M16 23h16M16 30h10"/></svg>
         </span>
@@ -108,8 +106,8 @@
         </span>
         تحويل الأموال
       </a>
-      <!-- 3. تسديد مشتريات (في أقصى اليسار) -->
-      <div onclick="alert('تسديد مشتريات قيد الانشاء')">
+      <!-- 3. تسديد مشتريات (في اليسار) -->
+      <div onclick="alert('تسديد مشتريات')">
         <span class="circle">
           <svg viewBox="0 0 48 48"><path d="M8 12h32v24H8z"/><path d="M14 20h12M14 26h8"/></svg>
         </span>
@@ -119,7 +117,7 @@
   </header>
 
   <main class="grid">
-    <!-- السطر الأول: من اليمين ليسار -->
+    <!-- السطر الأول -->
     <div class="card blue" onclick="alert('طلب دفتر شيكات')">
       <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
       طلب دفتر شيكات
@@ -133,7 +131,7 @@
       تعبئة رصيد الهاتف
     </div>
 
-    <!-- السطر الثاني: من اليمين لليسار -->
+    <!-- السطر الثاني -->
     <div class="card yellow" onclick="alert('البطاقات البنكية')">
       <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
       البطاقات البنكية
@@ -147,7 +145,7 @@
       ب-باي
     </div>
 
-    <!-- السطر الثالث: جيمتيل في اليمين وباقي الفراغات فارغة ثابته -->
+    <!-- السطر الثالث -->
     <div class="card" onclick="alert('جيمتيل')">
       <span class="g-icon">G</span>
       جيمتيل
