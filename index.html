@@ -13,14 +13,14 @@
         
         .app-screen { 
             position: fixed; 
-            top: 0;
-            left: 0;
+            top: 0; 
+            left: 0; 
             width: 100%; 
             height: 100%; 
-            background: #ffffff;
+            background: #ffffff; 
             display: none; 
-            justify-content: center;
-            align-items: center;
+            justify-content: center; 
+            align-items: center; 
         }
         
         .app-screen.active { 
@@ -42,7 +42,6 @@
             display: block; 
         }
         
-        /* مناطق النقر الفورية والدقيقة بعيداً عن تقاطع شريط الجوال السفلي */
         .hotspot {
             position: absolute;
             background: transparent;
@@ -55,7 +54,7 @@
 </head>
 <body>
 
-    <!-- الشاشة الأولى: تسجيل الدخول -->
+    <!-- 1. شاشة تسجيل الدخول -->
     <div id="screen-login" class="app-screen active">
         <div class="screen-container">
             <img src="login.png" alt="Login">
@@ -63,31 +62,42 @@
         </div>
     </div>
 
-    <!-- الشاشة الثانية: لوحة القيادة -->
+    <!-- 2. لوحة القيادة -->
     <div id="screen-dashboard" class="app-screen">
         <div class="screen-container">
             <img src="dashboard.png" alt="Dashboard">
-            <!-- زر إرسال الأموال في الأعلى -->
-            <div class="hotspot" style="top: 0; right: 0; width: 52%; height: 22%;" ontouchstart="goToScreen('screen-transfer', event)" onclick="goToScreen('screen-transfer', event)"></div>
+            <!-- الانتقال إلى قائمة التحويل (transfer.png) -->
+            <div class="hotspot" style="top: 0; right: 0; width: 52%; height: 22%;" ontouchstart="goToScreen('screen-transfer-menu', event)" onclick="goToScreen('screen-transfer-menu', event)"></div>
         </div>
     </div>
 
-    <!-- الشاشة الثالثة: إرسال الأموال -->
-    <div id="screen-transfer" class="app-screen">
+    <!-- 3. قائمة التحويل (transfer.png) -->
+    <div id="screen-transfer-menu" class="app-screen">
         <div class="screen-container">
-            <img src="transfer.png" alt="Transfer">
-            <!-- زر الرجوع (السهم في الأعلى على اليمين) -->
+            <img src="transfer.png" alt="Transfer Menu">
+            <!-- سهم الرجوع للوحة القيادة -->
             <div class="hotspot" style="top: 0; right: 0; width: 22%; height: 12%;" ontouchstart="goToScreen('screen-dashboard', event)" onclick="goToScreen('screen-dashboard', event)"></div>
-            <!-- زر إرسال الأصفر في الأسفل (مرفوع قليلاً لضمان الاستجابة السريعة) -->
+            <!-- النقر على زر "إرسال الأموال" (القسم الأيمن العلوي) للانتقال لصفحة الإدخال -->
+            <div class="hotspot" style="top: 0; right: 0; width: 50%; height: 30%;" ontouchstart="goToScreen('screen-send-form', event)" onclick="goToScreen('screen-send-form', event)"></div>
+        </div>
+    </div>
+
+    <!-- 4. صفحة إدخال رقم الهاتف والمبلغ (send-form.png) -->
+    <div id="screen-send-form" class="app-screen">
+        <div class="screen-container">
+            <img src="send-form.png" alt="Send Form">
+            <!-- سهم الرجوع للقائمة -->
+            <div class="hotspot" style="top: 0; right: 0; width: 22%; height: 12%;" ontouchstart="goToScreen('screen-transfer-menu', event)" onclick="goToScreen('screen-transfer-menu', event)"></div>
+            <!-- زر إرسال الأصفر في الأسفل للانتقال للنجاح -->
             <div class="hotspot" style="bottom: 15px; left: 5%; width: 90%; height: 55px;" ontouchstart="goToScreen('screen-confirm', event)" onclick="goToScreen('screen-confirm', event)"></div>
         </div>
     </div>
 
-    <!-- الشاشة الرابعة: التأكيد -->
+    <!-- 5. صفحة النجاح والتأكيد (confirm.png) -->
     <div id="screen-confirm" class="app-screen">
         <div class="screen-container">
             <img src="confirm.png" alt="Confirm">
-            <!-- زر العودة للوحة القيادة -->
+            <!-- زر "فعله!" الأزرق للعودة للوحة القيادة -->
             <div class="hotspot" style="bottom: 22%; left: 15%; width: 70%; height: 50px;" ontouchstart="goToScreen('screen-dashboard', event)" onclick="goToScreen('screen-dashboard', event)"></div>
         </div>
     </div>
