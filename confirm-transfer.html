@@ -10,7 +10,7 @@
     --yellow: #fbb91d;
     --text: #333;
     --border: #dcdcdc;
-    --card-bg: #f2f3f5; /* الخلفية الرمادية الفاتحة تماماً كالأصل */
+    --card-bg: #f2f3f5;
     --gray-bg: #fff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,9 +23,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
-  /* الهيدر العلوي */
   .header { background: var(--primary); color: #fff; padding: 14px 16px; }
   .header-top {
     display: flex; align-items: center; justify-content: space-between;
@@ -34,14 +34,12 @@
   .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
   .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
 
-  /* محتوى الصفحة */
   .content { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
   
   .review-title {
     font-size: 13px; color: #666; text-align: left;
   }
 
-  /* بيانات المستلم: الرقم في اليمين والأيقونة في اليسار */
   .recipient-box {
     display: flex; align-items: center; justify-content: space-between;
     padding: 6px 4px;
@@ -55,7 +53,6 @@
   }
   .recipient-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; }
 
-  /* صندوق التفاصيل والرسوم ذو الخلفية الرمادية الفاتحة */
   .details-card {
     background: var(--card-bg); border-radius: 6px; border: 1px solid var(--border);
     overflow: hidden; margin-top: 4px;
@@ -78,13 +75,51 @@
   .fee-left { direction: ltr; font-weight: 500; }
   .fee-right { text-align: right; font-weight: 500; }
 
-  /* زر "تم" السفلي */
   .submit-btn {
     background: var(--yellow); color: #fff; border: 0; padding: 16px;
     font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
-    text-align: center; margin-top: auto; text-decoration: none; display: block;
+    text-align: center; margin-top: auto; display: block;
   }
   .submit-btn:active { opacity: 0.9; }
+
+  /* نافذة إدخال الرقم السري (PIN Modal) */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); display: none;
+    justify-content: center; align-items: center; z-index: 1000; padding: 20px;
+  }
+  .pin-box {
+    background: #fff; width: 100%; max-width: 340px; border-radius: 6px;
+    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    display: flex; flex-direction: column; position: relative; padding-bottom: 0;
+  }
+  .close-pin {
+    position: absolute; top: 12px; left: 14px; background: none; border: 0;
+    cursor: pointer; color: #555; display: grid; place-items: center;
+  }
+  .close-pin svg { width: 22px; height: 22px; stroke: #333; stroke-width: 2; fill: none; }
+  
+  .pin-title {
+    font-size: 16px; font-weight: 600; color: #222; text-align: center; margin: 28px 20px 20px;
+  }
+  .pin-inputs {
+    display: flex; justify-content: center; gap: 16px; margin-bottom: 28px; direction: ltr;
+  }
+  .pin-line {
+    width: 32px; height: 2px; background: #333;
+  }
+  .pin-submit-btn {
+    background: var(--primary); color: #fff; border: 0; padding: 14px;
+    font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;
+    text-align: center; display: block;
+  }
+
+  /* نافذة النجاح (تظهر بعد إدخال PIN) */
+  .success-box {
+    background: #fff; width: 100%; max-width: 340px; border-radius: 4px;
+    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    text-align: center; display: none; flex-direction: column;
+  }
 </style>
 </head>
 <body>
@@ -102,7 +137,6 @@
   <div class="content">
     <div class="review-title">مراجعة التفاصيل المدخلة</div>
 
-    <!-- رقم المستلم -->
     <div class="recipient-box">
       <span class="recipient-phone" id="display-phone">36654787</span>
       <div class="recipient-icon">
@@ -110,7 +144,6 @@
       </div>
     </div>
 
-    <!-- الصندوق الرمادي الفاتح للتفاصيل والرسوم -->
     <div class="details-card">
       <div class="amount-row">
         <span class="amount-label">المبلغ</span>
@@ -119,19 +152,16 @@
       
       <div class="fees-section">
         <div class="fees-title">توزيع الرسوم:</div>
-        
         <div class="fee-item">
           <span class="fee-right">تكلفة الخدمة</span>
           <span>-</span>
           <span class="fee-left">MRU 4.31</span>
         </div>
-        
         <div class="fee-item">
           <span class="fee-right">عمولة</span>
           <span>-</span>
           <span class="fee-left">MRU 0</span>
         </div>
-        
         <div class="fee-item">
           <span class="fee-right">ضريبة</span>
           <span>-</span>
@@ -141,16 +171,73 @@
     </div>
   </div>
 
-  <!-- زر تم -->
-  <a href="index.html" class="submit-btn" onclick="alert('تم إتمام عملية التحويل بنجاح!')">تم</a>
+  <button class="submit-btn" onclick="openPinModal()">تم</button>
+
+  <!-- نافذة إدخال الرقم السري -->
+  <div class="modal-overlay" id="pinModal">
+    <div class="pin-box" id="pinBoxContent">
+      <button class="close-pin" onclick="closePinModal()">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="pin-title">يرجى إدخال رقم السري لـ بدء الطلب.</div>
+      <div class="pin-inputs">
+        <div class="pin-line"></div>
+        <div class="pin-line"></div>
+        <div class="pin-line"></div>
+        <div class="pin-line"></div>
+      </div>
+      <button class="pin-submit-btn" onclick="submitPin()">ارسل طلب</button>
+    </div>
+
+    <!-- نافذة النجاح تظهر داخلياً بعد الضغط على ارسل طلب -->
+    <div class="success-box" id="successBoxContent">
+      <div style="font-size: 18px; font-weight: 700; color: #222; margin: 24px 0 16px;">النقل ناجح!</div>
+      <div style="width: 60px; height: 60px; border: 3px solid #4CAF50; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center;">
+        <svg style="width: 34px; height: 34px; stroke: #4CAF50; fill: none; stroke-width: 3;" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div style="padding: 0 20px 20px; font-size: 13px; color: #444; text-align: right; display: flex; flex-direction: column; gap: 8px; line-height: 1.6;">
+        <div>المستفيد: <span id="m-phone">43426516</span> المبلغ المرسل: <span id="m-amount">MRU 690</span></div>
+        <div>معرف المعاملة: <span id="m-tx">022611220573200000</span></div>
+        <div>التاريخ والوقت: <span id="m-datetime">26-11-12 20:57:33</span></div>
+      </div>
+      <a href="index.html" style="background: var(--primary); color: #fff; border: 0; padding: 14px; font-size: 16px; font-weight: 600; text-align: center; text-decoration: none; display: block;">فعلة!</a>
+    </div>
+  </div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const phone = urlParams.get('phone');
-    const amount = urlParams.get('amount');
+    const phone = urlParams.get('phone') || '36654787';
+    const amount = urlParams.get('amount') || '2 000';
     
-    if(phone) document.getElementById('display-phone').textContent = phone;
-    if(amount) document.getElementById('display-amount').textContent = 'MRU ' + amount;
+    document.getElementById('display-phone').textContent = phone;
+    document.getElementById('display-amount').textContent = 'MRU ' + amount;
+
+    function openPinModal() {
+      document.getElementById('pinModal').style.display = 'flex';
+      document.getElementById('pinBoxContent').style.display = 'flex';
+      document.getElementById('successBoxContent').style.display = 'none';
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').style.display = 'none';
+    }
+
+    function submitPin() {
+      // إخفاء صندوق الـ PIN وإظهار صندوق النجاح
+      document.getElementById('pinBoxContent').style.display = 'none';
+      
+      document.getElementById('m-phone').textContent = phone;
+      document.getElementById('m-amount').textContent = 'MRU ' + amount;
+      
+      const randomTx = Math.floor(100000000000000000 + Math.random() * 900000000000000000);
+      document.getElementById('m-tx').textContent = randomTx;
+
+      const now = new Date();
+      const dtStr = `${now.getFullYear().toString().slice(-2)}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+      document.getElementById('m-datetime').textContent = dtStr;
+
+      document.getElementById('successBoxContent').style.display = 'flex';
+    }
   </script>
 
 </body>
