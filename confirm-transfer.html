@@ -108,7 +108,6 @@
     font-size: 15px; font-weight: 600; color: #222; text-align: center; margin: 28px 20px 20px;
   }
   
-  /* حقل إدخال الرقم السري (خطوط أفقية تظهر النقاط بداخلها) */
   .pin-inputs-container {
     display: flex; justify-content: center; gap: 20px; margin-bottom: 24px; direction: ltr;
   }
@@ -126,11 +125,11 @@
     text-align: center; display: block;
   }
 
-  /* لوحة مفاتيح الأرقام السفلية (Custom Keypad) */
+  /* لوحة مفاتيح الأرقام بالترتيب الصحيح (1 إلى 9) */
   .custom-keypad {
     background: #d1d5db; width: 100%; max-width: 480px; padding: 8px;
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-    margin: 0 auto;
+    margin: 0 auto; direction: ltr; /* لضمان ترتيب المفاتيح 1, 2, 3 يميناً ويساراً بشكل صحيح */
   }
   .key-btn {
     background: #fff; border: 0; border-radius: 4px; padding: 14px 0;
@@ -140,7 +139,6 @@
   .key-btn:active { background: #e0e0e0; }
   .key-btn svg { width: 24px; height: 24px; stroke: #333; fill: none; stroke-width: 2; }
 
-  /* نافذة النجاح */
   .success-box {
     background: #fff; width: 100%; max-width: 360px; border-radius: 6px;
     overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
@@ -199,11 +197,9 @@
 
   <button class="submit-btn" onclick="openPinModal()">تم</button>
 
-  <!-- نافذة إدخال الرقم السري مع لوحة المفاتيح -->
   <div class="modal-overlay" id="pinModal">
     <div class="pin-dialog-wrapper">
       
-      <!-- مربع إدخال PIN -->
       <div class="pin-box" id="pinBoxContent">
         <button class="close-pin" onclick="closePinModal()">
           <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -211,22 +207,21 @@
         <div class="pin-title">يرجى إدخال رقم السري لـ بدء الطلب.</div>
         
         <div class="pin-inputs-container">
-          <div class="pin-line" id="dot-0"><span id="val-0"></span></div>
-          <div class="pin-line" id="dot-1"><span id="val-1"></span></div>
-          <div class="pin-line" id="dot-2"><span id="val-2"></span></div>
-          <div class="pin-line" id="dot-3"><span id="val-3"></span></div>
+          <div class="pin-dot-line" id="dot-0"><span id="val-0"></span></div>
+          <div class="pin-dot-line" id="dot-1"><span id="val-1"></span></div>
+          <div class="pin-dot-line" id="dot-2"><span id="val-2"></span></div>
+          <div class="pin-dot-line" id="dot-3"><span id="val-3"></span></div>
         </div>
 
         <button class="pin-submit-btn" onclick="submitPin()">ارسل طلب</button>
       </div>
 
-      <!-- مربع النجاح -->
       <div class="success-box" id="successBoxContent">
         <div style="font-size: 18px; font-weight: 700; color: #222; margin: 24px 0 16px;">النقل ناجح!</div>
         <div style="width: 60px; height: 60px; border: 3px solid #4CAF50; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center;">
           <svg style="width: 34px; height: 34px; stroke: #4CAF50; fill: none; stroke-width: 3;" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
-        <div style="padding: 0 20px 20px; font-size: 13px; color: #444; text-align: right; display: flex; flex-direction: column; gap: 8px; line-height: 1.6;">
+        <div style="padding: 0 20px 20px; font-size: 13px; color: #444; text-align: right; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; direction: rtl;">
           <div>المستفيد: <span id="m-phone">43426516</span> المبلغ المرسل: <span id="m-amount">MRU 690</span></div>
           <div>معرف المعاملة: <span id="m-tx">022611220573200000</span></div>
           <div>التاريخ والوقت: <span id="m-datetime">26-11-12 20:57:33</span></div>
@@ -236,7 +231,7 @@
 
     </div>
 
-    <!-- لوحة مفاتيح الأرقام (Clavier) في الأسفل -->
+    <!-- لوحة المفاتيح بالترتيب الصحيح المطابق لصورتك تماماً -->
     <div class="custom-keypad" id="numericKeypad">
       <button class="key-btn" onclick="pressKey('1')">1</button>
       <button class="key-btn" onclick="pressKey('2')">2</button>
@@ -302,7 +297,7 @@
       for(let i = 0; i < 4; i++) {
         const span = document.getElementById(`val-${i}`);
         if(pinValues[i] !== '') {
-          span.textContent = '•'; // إظهار نقطة سرية
+          span.textContent = '•';
           span.style.display = 'block';
         } else {
           span.textContent = '';
@@ -317,7 +312,6 @@
         return;
       }
 
-      // إخفاء صندوق الـ PIN ولوحة المفاتيح وإظهار نافذة النجاح
       document.getElementById('pinBoxContent').style.display = 'none';
       document.getElementById('numericKeypad').style.display = 'none';
       
