@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>لوحة القيادة</title>
+<title>بنكي - محاكاة التطبيق</title>
 <style>
   :root {
     --primary: #00bcd4;
@@ -13,6 +13,7 @@
     --text: #333;
     --border: #cfcfcf;
     --gray: #f3f3f3;
+    --success: #4caf50;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -26,7 +27,11 @@
     flex-direction: column;
   }
 
-  /* الهيدر العلوي */
+  /* نظام إظهار وإخفاء الشاشات التفاعلي */
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* --- الشاشة الأولى: لوحة القيادة --- */
   .header { background: var(--primary); color: #fff; padding: 14px 16px 18px; }
   .header-top {
     display: flex; align-items: center; justify-content: space-between;
@@ -36,9 +41,9 @@
   .menu-btn { background: none; border: 0; color: #fff; font-size: 28px; cursor: pointer; line-height: 1; }
   
   .quick { display: flex; justify-content: space-between; padding: 0 4px; direction: rtl; }
-  .quick a {
+  .quick a, .quick div {
     display: flex; flex-direction: column; align-items: center;
-    gap: 8px; color: #fff; text-decoration: none; font-size: 13px; text-align: center; width: 32%;
+    gap: 8px; color: #fff; text-decoration: none; font-size: 13px; text-align: center; width: 32%; cursor: pointer;
   }
   .circle {
     width: 72px; height: 72px; border-radius: 50%;
@@ -47,7 +52,6 @@
   }
   .circle svg { width: 36px; height: 36px; stroke: #fff; fill: none; stroke-width: 1.6; }
 
-  /* الشبكة الوسطى */
   .grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 12px; padding: 20px 14px; flex: 1; align-content: start;
@@ -59,7 +63,7 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 12px; text-decoration: none; color: var(--text);
     font-weight: 600; font-size: 13px; text-align: center; padding: 6px;
-    transition: background .15s;
+    transition: background .15s; cursor: pointer;
   }
   .card:active { background: #f1fbfd; }
   .card svg { width: 44px; height: 44px; fill: none; stroke-width: 2; }
@@ -70,7 +74,6 @@
     color: #fff; display: grid; place-items: center; font-size: 28px; font-weight: 700;
   }
 
-  /* الشريط السفلي */
   .tabbar {
     display: flex; border-top: 1px solid #e5e5e5; background: #fff;
     position: sticky; bottom: 0; padding: 10px 0 12px; direction: rtl;
@@ -82,92 +85,257 @@
   .tab svg { width: 26px; height: 26px; fill: none; stroke: #888; stroke-width: 1.6; }
   .tab.active { color: var(--primary); }
   .tab.active svg { stroke: var(--primary); }
+
+
+  /* --- شاشة تحويل الأموال والخطوات التفاعلية --- */
+  .sub-header { background: var(--primary); color: #fff; padding: 14px 14px 24px; }
+  .back-btn { background: none; border: 0; cursor: pointer; }
+  .back-btn svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 3; }
+
+  .form-container { padding: 24px 16px; display: flex; flex-direction: column; gap: 20px; }
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-group label { font-size: 14px; font-weight: 600; color: #555; }
+  .input-group input {
+    padding: 14px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 16px; outline: none; text-align: right;
+  }
+  .input-group input:focus { border-color: var(--primary); }
+
+  .primary-btn {
+    background: var(--primary); color: #fff; border: 0; padding: 15px;
+    border-radius: 6px; font-size: 16px; font-weight: 700; cursor: pointer;
+    margin-top: 10px; width: 100%; text-align: center;
+  }
+  .primary-btn:active { background: var(--dark); }
+
+  /* نافذة الرمز السري المنبثقة Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    display: none; place-items: center; z-index: 100; padding: 20px;
+  }
+  .modal-overlay.active { display: grid; }
+  .modal-box {
+    background: #fff; width: 100%; max-width: 360px; border-radius: 12px;
+    padding: 24px; display: flex; flex-direction: column; gap: 16px; text-align: center;
+  }
+  .modal-box h3 { font-size: 18px; color: var(--text); }
+  .pin-input {
+    letter-spacing: 8px; font-size: 24px; text-align: center; padding: 10px;
+    border: 1px solid var(--border); border-radius: 6px; width: 100%;
+  }
+
+  /* شاشة النجاح النهائية */
+  .success-screen {
+    padding: 40px 20px; text-align: center; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 20px; flex: 1;
+  }
+  .success-icon {
+    width: 80px; height: 80px; background: var(--success); color: #fff;
+    border-radius: 50%; display: grid; place-items: center; font-size: 40px;
+  }
+  .success-screen h2 { color: var(--success); font-size: 22px; }
+  .receipt-card {
+    background: var(--gray); width: 100%; padding: 20px; border-radius: 8px;
+    text-align: right; display: flex; flex-direction: column; gap: 10px; font-size: 14px;
+  }
+  .receipt-row { display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="header-top">
-      <button class="menu-btn" aria-label="القائمة">&#9776;</button>
-      <h1>لوحة القيادة</h1>
-      <div style="width: 28px;"></div>
-    </div>
-    <nav class="quick">
-      <a href="#">
-        <span class="circle">
-          <svg viewBox="0 0 48 48"><path d="M14 8h20v32l-4-3-3 3-3-3-3 3-3-3-4 3z"/><path d="M19 16h10M19 22h10M19 28h6"/></svg>
-        </span>
-        حسابي
-      </a>
-      <!-- الرابط الحقيقي للصفحة الثانية -->
-      <a href="transfer.html">
-        <span class="circle">
-          <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="4"/><path d="M14 42h20m-5-4 5 4-5 4"/></svg>
-        </span>
-        تحويل الأموال
-      </a>
-      <a href="#">
-        <span class="circle">
-          <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M12 38h24"/></svg>
-        </span>
-        تسديد مشتريات
-      </a>
+  <!-- الشاشة 1: لوحة القيادة (Dashboard) -->
+  <div id="screen-dashboard" class="screen active">
+    <header class="header">
+      <div class="header-top">
+        <button class="menu-btn" aria-label="القائمة">&#9776;</button>
+        <h1>لوحة القيادة</h1>
+        <div style="width: 28px;"></div>
+      </div>
+      <nav class="quick">
+        <div>
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><path d="M14 8h20v32l-4-3-3 3-3-3-3 3-3-3-4 3z"/><path d="M19 16h10M19 22h10M19 28h6"/></svg>
+          </span>
+          حسابي
+        </div>
+        <!-- عند الضغط هنا، ينتقل فوراً لشاشة إدخال تفاصيل التحويل -->
+        <div onclick="goToScreen('screen-transfer-form')">
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="4"/><path d="M14 42h20m-5-4 5 4-5 4"/></svg>
+          </span>
+          تحويل الأموال
+        </div>
+        <div>
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M12 38h24"/></svg>
+          </span>
+          تسديد مشتريات
+        </div>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <div class="card blue">
+        <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
+        طلب دفتر شيكات
+      </div>
+      <div class="card yellow">
+        <svg viewBox="0 0 48 48"><path d="M12 6h24v36H12z"/><path d="M18 14h12M18 20h12M18 26h8"/></svg>
+        تسديد الفواتير
+      </div>
+      <div class="card blue">
+        <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M24 34V20m-6 5 6-6 6 6M20 40h8"/></svg>
+        تعبئة رصيد الهاتف
+      </div>
+      <div class="card yellow">
+        <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M17 14h14l-2 10H19zM20 30h8"/></svg>
+        ب-باي
+      </div>
+      <div class="card blue">
+        <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="8" rx="1"/><path d="M16 14v22h16V14M20 20h8M20 26h8"/></svg>
+        سحب النقود
+      </div>
+      <div class="card yellow">
+        <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
+        البطاقات البنكية
+      </div>
+      <div></div><div></div>
+      <div class="card">
+        <span class="g-icon">G</span>
+        جيمتيل
+      </div>
+    </main>
+
+    <nav class="tabbar">
+      <div class="tab active"><svg viewBox="0 0 32 32"><path d="M4 16 16 5l12 11M8 14v13h6v-8h4v8h6V14"/></svg>الرئيسية</div>
+      <div class="tab"><svg viewBox="0 0 32 32"><path d="m16 4 3.7 7.6 8.3 1.2-6 5.9 1.4 8.3L16 23l-7.4 4 1.4-8.3-6-5.9 8.3-1.2z"/></svg>المفضلة</div>
+      <div class="tab"><svg viewBox="0 0 32 32"><path d="M8 24V14a8 8 0 0 1 16 0v10l2 2H6zM13 28h6"/></svg>الاشعارات</div>
+      <div class="tab"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12 12.5a4 4 0 1 1 5.5 3.7c-1 .5-1.5 1.2-1.5 2.3M16 23v.5"/></svg>المساعدة</div>
     </nav>
-  </header>
+  </div>
 
-  <main class="grid">
-    <a href="#" class="card blue">
-      <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
-      طلب دفتر شيكات
-    </a>
-    <a href="#" class="card yellow">
-      <svg viewBox="0 0 48 48"><path d="M12 6h24v36H12z"/><path d="M18 14h12M18 20h12M18 26h8"/></svg>
-      تسديد الفواتير
-    </a>
-    <a href="#" class="card blue">
-      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M24 34V20m-6 5 6-6 6 6M20 40h8"/></svg>
-      تعبئة رصيد الهاتف
-    </a>
 
-    <a href="#" class="card yellow">
-      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M17 14h14l-2 10H19zM20 30h8"/></svg>
-      ب-باي
-    </a>
-    <a href="#" class="card blue">
-      <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="8" rx="1"/><path d="M16 14v22h16V14M20 20h8M20 26h8"/></svg>
-      سحب النقود
-    </a>
-    <a href="#" class="card yellow">
-      <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
-      البطاقات البنكية
-    </a>
+  <!-- الشاشة 2: نموذج إدخال التحويل (رقم الهاتف والمبلغ) -->
+  <div id="screen-transfer-form" class="screen">
+    <header class="sub-header">
+      <div class="header-top" style="direction:rtl;">
+        <button class="back-btn" onclick="goToScreen('screen-dashboard')">
+          <svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg>
+        </button>
+        <h1>إرسال الأموال</h1>
+        <div style="width: 26px;"></div>
+      </div>
+    </header>
 
-    <div></div>
-    <div></div>
-    <a href="#" class="card">
-      <span class="g-icon">G</span>
-      جيمتيل
-    </a>
-  </main>
+    <div class="form-container">
+      <div class="input-group">
+        <label>رقم المستلم (هاتف)</label>
+        <input type="tel" id="recipient-phone" placeholder="مثال: 40000000" value="45123456">
+      </div>
+      <div class="input-group">
+        <label>المبلغ المراد تحويله (أوقية)</label>
+        <input type="number" id="transfer-amount" placeholder="0.00" value="5000">
+      </div>
+      <button class="primary-btn" onclick="proceedToReview()">متابعة العملية</button>
+    </div>
+  </div>
 
-  <nav class="tabbar">
-    <a href="#" class="tab active">
-      <svg viewBox="0 0 32 32"><path d="M4 16 16 5l12 11M8 14v13h6v-8h4v8h6V14"/></svg>
-      الرئيسية
-    </a>
-    <a href="#" class="tab">
-      <svg viewBox="0 0 32 32"><path d="m16 4 3.7 7.6 8.3 1.2-6 5.9 1.4 8.3L16 23l-7.4 4 1.4-8.3-6-5.9 8.3-1.2z"/></svg>
-      المفضلة
-    </a>
-    <a href="#" class="tab">
-      <svg viewBox="0 0 32 32"><path d="M8 24V14a8 8 0 0 1 16 0v10l2 2H6zM13 28h6"/></svg>
-      الاشعارات
-    </a>
-    <a href="#" class="tab">
-      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12 12.5a4 4 0 1 1 5.5 3.7c-1 .5-1.5 1.2-1.5 2.3M16 23v.5"/></svg>
-      المساعدة
-    </a>
-  </nav>
+
+  <!-- الشاشة 3: ملخص وتأكيد العملية -->
+  <div id="screen-review" class="screen">
+    <header class="sub-header">
+      <div class="header-top" style="direction:rtl;">
+        <button class="back-btn" onclick="goToScreen('screen-transfer-form')">
+          <svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg>
+        </button>
+        <h1>تأكيد التحويل</h1>
+        <div style="width: 26px;"></div>
+      </div>
+    </header>
+
+    <div class="form-container">
+      <div class="receipt-card">
+        <div class="receipt-row"><span>المستلم:</span> <strong id="lbl-phone">-</strong></div>
+        <div class="receipt-row"><span>المبلغ الأساسي:</span> <strong id="lbl-amount">- أوقية</strong></div>
+        <div class="receipt-row"><span>رسوم التحويل:</span> <strong>0 أوقية</strong></div>
+        <hr style="border: 0; border-top: 1px solid #ddd;">
+        <div class="receipt-row" style="font-size:16px; color:var(--dark);"><span>الإجمالي الكلي:</span> <strong id="lbl-total">-</strong></div>
+      </div>
+      <button class="primary-btn" onclick="openPinModal()">تأكيد وإدخال الرمز السري</button>
+    </div>
+  </div>
+
+
+  <!-- نافذة الرمز السري المنبثقة (PIN Modal) -->
+  <div id="pin-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>أدخل الرمز السري (PIN)</h3>
+      <p style="font-size: 13px; color: #666;">أدخل رمز التأكيد الخاص بحسابك لإتمام التحويل</p>
+      <input type="password" maxlength="4" class="pin-input" id="pin-code" value="1234">
+      <button class="primary-btn" onclick="completeTransfer()">إرسال الآن</button>
+      <button style="background:none; border:0; color:#888; cursor:pointer;" onclick="closePinModal()">إلغاء</button>
+    </div>
+  </div>
+
+
+  <!-- الشاشة 4: شاشة النجاح النهائية -->
+  <div id="screen-success" class="screen">
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <h2>تمت عملية التحويل بنجاح!</h2>
+      <div class="receipt-card">
+        <div class="receipt-row"><span>رقم المعاملة:</span> <strong>#BK-984210</strong></div>
+        <div class="receipt-row"><span>إلى الرقم:</span> <strong id="succ-phone">-</strong></div>
+        <div class="receipt-row"><span>المبلغ المرسل:</span> <strong id="succ-amount">-</strong></div>
+        <div class="receipt-row"><span>التاريخ:</span> <strong>2026-11-13</strong></div>
+      </div>
+      <button class="primary-btn" onclick="goToScreen('screen-dashboard')">العودة للرئيسية</button>
+    </div>
+  </div>
+
+
+  <!-- سكريبت التفاعل الحقيقي بين الشاشات -->
+  <script>
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function proceedToReview() {
+      const phone = document.getElementById('recipient-phone').value;
+      const amount = document.getElementById('transfer-amount').value;
+      if(!phone || !amount) {
+        alert('الرجاء إدخال رقم الهاتف والمبلغ');
+        return;
+      }
+      document.getElementById('lbl-phone').innerText = phone;
+      document.getElementById('lbl-amount').innerText = amount + ' أوقية';
+      document.getElementById('lbl-total').innerText = amount + ' أوقية';
+      goToScreen('screen-review');
+    }
+
+    function openPinModal() {
+      document.getElementById('pin-modal').classList.add('active');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.remove('active');
+    }
+
+    function completeTransfer() {
+      const pin = document.getElementById('pin-code').value;
+      if(pin.length < 4) {
+        alert('الرجاء إدخال الرمز السري الصحيح');
+        return;
+      }
+      closePinModal();
+      // نقل البيانات لشاشة النجاح
+      document.getElementById('succ-phone').innerText = document.getElementById('recipient-phone').value;
+      document.getElementById('succ-amount').innerText = document.getElementById('transfer-amount').value + ' أوقية';
+      goToScreen('screen-success');
+    }
+  </script>
 
 </body>
 </html>
