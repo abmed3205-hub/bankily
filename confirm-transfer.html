@@ -1,376 +1,52 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<title>تأكيد تحويل الأموال</title>
-<style>
-  :root {
-    --primary: #00bcd4;
-    --yellow: #fbb91d;
-    --text: #333;
-    --border: #dcdcdc;
-    --card-bg: #f2f3f5;
-    --gray-bg: #fff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    background: var(--gray-bg);
-    color: var(--text);
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .header { background: var(--primary); color: #fff; padding: 14px 16px; }
-  .header-top {
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
-  .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
-  .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
-
-  .content { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
-  
-  .review-title {
-    font-size: 13px; color: #666; text-align: left;
-  }
-
-  .recipient-box {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 4px;
-  }
-  .recipient-phone {
-    font-size: 18px; font-weight: 700; color: #111; letter-spacing: 1px; direction: ltr;
-  }
-  .recipient-icon {
-    width: 42px; height: 42px; background: #5a6b7c; border-radius: 50%;
-    display: grid; place-items: center;
-  }
-  .recipient-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; }
-
-  .details-card {
-    background: var(--card-bg); border-radius: 6px; border: 1px solid var(--border);
-    overflow: hidden; margin-top: 4px;
-  }
-  .amount-row {
-    padding: 16px 16px; border-bottom: 1px solid var(--border);
-    display: flex; flex-direction: column; gap: 4px; text-align: right;
-  }
-  .amount-label { font-size: 13px; color: #666; text-align: right; }
-  .amount-value { font-size: 18px; font-weight: 700; color: #111; text-align: right; direction: ltr; }
-
-  .fees-section { padding: 16px; }
-  .fees-title { font-size: 13px; color: #555; margin-bottom: 14px; text-align: right; }
-  
-  .fee-item {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px; font-size: 14px; color: #333;
-  }
-  .fee-item:last-child { margin-bottom: 0; }
-  .fee-left { direction: ltr; font-weight: 500; }
-  .fee-right { text-align: right; font-weight: 500; }
-
-  .submit-btn {
-    background: var(--yellow); color: #fff; border: 0; padding: 16px;
-    font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
-    text-align: center; margin-top: auto; display: block;
-  }
-  .submit-btn:active { opacity: 0.9; }
-
-  /* نافذة إدخال الرقم السري */
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6); display: none;
-    flex-direction: column; justify-content: flex-end; z-index: 1000;
-  }
-  .pin-dialog-wrapper {
-    width: 100%; max-width: 480px; margin: 0 auto;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    flex: 1; padding: 16px;
-  }
-  .pin-box {
-    background: #fff; width: 100%; max-width: 340px; border-radius: 6px;
-    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    display: flex; flex-direction: column; position: relative;
-  }
-  .close-pin {
-    position: absolute; top: 14px; left: 16px; background: none; border: 0;
-    cursor: pointer; color: #555; display: grid; place-items: center;
-  }
-  .close-pin svg { width: 22px; height: 22px; stroke: #333; stroke-width: 2; fill: none; }
-  
-  .pin-title {
-    font-size: 15px; font-weight: 600; color: #222; text-align: center; margin: 28px 20px 20px;
-  }
-  
-  .pin-inputs-container {
-    display: flex; justify-content: center; gap: 20px; margin-bottom: 24px; direction: ltr;
-  }
-  .pin-dot-line {
-    width: 36px; height: 2px; background: #333; position: relative;
-    display: flex; justify-content: center; align-items: flex-end;
-  }
-  .pin-dot-line span {
-    font-size: 24px; font-weight: bold; position: absolute; bottom: 4px; display: none;
-  }
-
-  .pin-submit-btn {
-    background: var(--primary); color: #fff; border: 0; padding: 14px;
-    font-size: 16px; font-weight: 600; cursor: pointer; width: 100%;
-    text-align: center; display: block;
-  }
-
-  /* لوحة المفاتيح الرقمية */
-  .custom-keypad {
-    background: #d1d5db; width: 100%; max-width: 480px; padding: 8px;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-    margin: 0 auto; direction: ltr;
-  }
-  .key-btn {
-    background: #fff; border: 0; border-radius: 4px; padding: 14px 0;
-    font-size: 22px; font-weight: 600; color: #111; cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: grid; place-items: center;
-  }
-  .key-btn:active { background: #e0e0e0; }
-  .key-btn svg { width: 24px; height: 24px; stroke: #333; fill: none; stroke-width: 2; }
-
-  /* نافذة النجاح بالحجم المطابق تماماً للصورة الرسمية وتنسيق السطور */
-  .success-box {
-    background: #fff; width: 100%; max-width: 310px; border-radius: 4px;
-    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    text-align: center; display: none; flex-direction: column;
-  }
-  .success-title {
-    font-size: 17px; font-weight: 700; color: #222; margin: 18px 0 10px;
-  }
-  .success-check-icon {
-    width: 48px; height: 48px; border: 2.5px solid #4CAF50; border-radius: 50%;
-    margin: 0 auto 12px; display: grid; place-items: center;
-  }
-  .success-check-icon svg { width: 26px; height: 26px; stroke: #4CAF50; fill: none; stroke-width: 3; }
-
-  .success-details {
-    padding: 0 14px; font-size: 12px; color: #444; text-align: right;
-    display: flex; flex-direction: column; gap: 8px; line-height: 1.5; direction: rtl;
-  }
-  .favorite-row {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    margin: 12px 0 14px; font-size: 12px; color: #555; cursor: pointer;
-  }
-  .favorite-row svg { width: 14px; height: 14px; fill: #888; transition: fill 0.2s; }
-  .success-footer-btn {
-    background: var(--primary); color: #fff; border: 0; padding: 12px;
-    font-size: 15px; font-weight: 600; text-align: center; text-decoration: none; display: block;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Bankily - تحويل الأموال</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { width: 100%; height: 100%; background-color: #ffffff; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        
+        .app-screen { 
+            position: relative; 
+            width: 100%; 
+            max-width: 430px; 
+            height: 100vh; 
+        }
+        
+        .app-screen img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: fill; 
+            display: block; 
+        }
+        
+        /* زر تفاعلي شفاف فوق خيار "إرسال الأموال" (المربع الأخضر في الصورة) */
+        .hotspot-send {
+            position: absolute;
+            top: 12%;     /* موقع الزر رأسياً */
+            left: 52%;    /* موقع الزر أفقياً */
+            width: 44%;   /* عرض منطقة النقر */
+            height: 110px;/* ارتفاع منطقة النقر */
+            background: transparent;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="header-top">
-      <a href="send-money.html" class="back-btn">
-        <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
-      </a>
-      <h1>تأكيد تحويل الأموال</h1>
-      <div style="width: 24px;"></div>
+    <div class="app-screen">
+        <!-- عرض صورة تحويل الأموال -->
+        <img src="transfer.png" alt="Transfer Menu">
+
+        <!-- رابط شفاف يوجه إلى صفحة التأكيد confirm-transfer.html عند النقر على خيار إرسال الأموال -->
+        <a href="confirm-transfer.html" class="hotspot-send"></a>
     </div>
-  </header>
-
-  <div class="content">
-    <div class="review-title">مراجعة التفاصيل المدخلة</div>
-
-    <div class="recipient-box">
-      <span class="recipient-phone" id="display-phone">36654787</span>
-      <div class="recipient-icon">
-        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-      </div>
-    </div>
-
-    <div class="details-card">
-      <div class="amount-row">
-        <span class="amount-label">المبلغ</span>
-        <span class="amount-value" id="display-amount">MRU 2 000</span>
-      </div>
-      
-      <div class="fees-section">
-        <div class="fees-title">توزيع الرسوم:</div>
-        <div class="fee-item">
-          <span class="fee-right">تكلفة الخدمة</span>
-          <span>-</span>
-          <span class="fee-left">MRU 4.31</span>
-        </div>
-        <div class="fee-item">
-          <span class="fee-right">عمولة</span>
-          <span>-</span>
-          <span class="fee-left">MRU 0</span>
-        </div>
-        <div class="fee-item">
-          <span class="fee-right">ضريبة</span>
-          <span>-</span>
-          <span class="fee-left">MRU 0.86</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button class="submit-btn" onclick="openPinModal()">تم</button>
-
-  <div class="modal-overlay" id="pinModal">
-    <div class="pin-dialog-wrapper">
-      
-      <div class="pin-box" id="pinBoxContent">
-        <button class="close-pin" onclick="closePinModal()">
-          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-        <div class="pin-title">يرجى إدخال رقم السري لـ بدء الطلب.</div>
-        
-        <div class="pin-inputs-container">
-          <div class="pin-dot-line" id="dot-0"><span id="val-0"></span></div>
-          <div class="pin-dot-line" id="dot-1"><span id="val-1"></span></div>
-          <div class="pin-dot-line" id="dot-2"><span id="val-2"></span></div>
-          <div class="pin-dot-line" id="dot-3"><span id="val-3"></span></div>
-        </div>
-
-        <button class="pin-submit-btn" onclick="submitPin()">ارسل طلب</button>
-      </div>
-
-      <!-- نافذة النجاح بالحجم والبيانات الصحيحة -->
-      <div class="success-box" id="successBoxContent">
-        <div class="success-title">النقل ناجح!</div>
-        <div class="success-check-icon">
-          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        
-        <div class="success-details">
-          <div>المستفيد: <span id="m-phone">43426516</span> المبلغ المرسل: <span id="m-amount">MRU 690</span></div>
-          <div>معرف المعاملة: <span id="m-tx">022611220573200000</span></div>
-          <div>التاريخ والوقت: <span id="m-datetime">26-11-12 20:57:33</span></div>
-        </div>
-        
-        <div class="favorite-row" onclick="toggleFav(this)">
-          <svg id="fav-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span>تعيين كمفضل</span>
-        </div>
-
-        <a href="index.html" class="success-footer-btn">فعلة!</a>
-      </div>
-
-    </div>
-
-    <div class="custom-keypad" id="numericKeypad">
-      <button class="key-btn" onclick="pressKey('1')">1</button>
-      <button class="key-btn" onclick="pressKey('2')">2</button>
-      <button class="key-btn" onclick="pressKey('3')">3</button>
-      <button class="key-btn" onclick="pressKey('4')">4</button>
-      <button class="key-btn" onclick="pressKey('5')">5</button>
-      <button class="key-btn" onclick="pressKey('6')">6</button>
-      <button class="key-btn" onclick="pressKey('7')">7</button>
-      <button class="key-btn" onclick="pressKey('8')">8</button>
-      <button class="key-btn" onclick="pressKey('9')">9</button>
-      <div style="visibility: hidden;"></div>
-      <button class="key-btn" onclick="pressKey('0')">0</button>
-      <button class="key-btn" onclick="deleteKey()">
-        <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM18 9l-6 6m0-6l6 6"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const phone = urlParams.get('phone') || '36654787';
-    const amount = urlParams.get('amount') || '2 000';
-    
-    document.getElementById('display-phone').textContent = phone;
-    document.getElementById('display-amount').textContent = 'MRU ' + amount;
-
-    let pinValues = ['', '', '', ''];
-
-    function openPinModal() {
-      pinValues = ['', '', '', ''];
-      updatePinDisplay();
-      document.getElementById('pinModal').style.display = 'flex';
-      document.getElementById('pinBoxContent').style.display = 'flex';
-      document.getElementById('successBoxContent').style.display = 'none';
-      document.getElementById('numericKeypad').style.display = 'grid';
-    }
-
-    function closePinModal() {
-      document.getElementById('pinModal').style.display = 'none';
-    }
-
-    function pressKey(num) {
-      for(let i = 0; i < 4; i++) {
-        if(pinValues[i] === '') {
-          pinValues[i] = num;
-          break;
-        }
-      }
-      updatePinDisplay();
-    }
-
-    function deleteKey() {
-      for(let i = 3; i >= 0; i--) {
-        if(pinValues[i] !== '') {
-          pinValues[i] = '';
-          break;
-        }
-      }
-      updatePinDisplay();
-    }
-
-    function updatePinDisplay() {
-      for(let i = 0; i < 4; i++) {
-        const span = document.getElementById(`val-${i}`);
-        if(pinValues[i] !== '') {
-          span.textContent = '•';
-          span.style.display = 'block';
-        } else {
-          span.textContent = '';
-          span.style.display = 'none';
-        }
-      }
-    }
-
-    function submitPin() {
-      if(pinValues.some(val => val === '')) {
-        alert('الرجاء إدخال الرقم السري المكون من 4 أرقام');
-        return;
-      }
-
-      document.getElementById('pinBoxContent').style.display = 'none';
-      document.getElementById('numericKeypad').style.display = 'none';
-      
-      // تعيين الرقم والمبلغ بشكل دقيق في نافذة النجاح
-      document.getElementById('m-phone').textContent = phone;
-      document.getElementById('m-amount').textContent = 'MRU ' + amount;
-      
-      const randomTx = Math.floor(100000000000000000 + Math.random() * 900000000000000000);
-      document.getElementById('m-tx').textContent = randomTx;
-
-      const now = new Date();
-      const dtStr = `${now.getFullYear().toString().slice(-2)}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-      document.getElementById('m-datetime').textContent = dtStr;
-
-      document.getElementById('successBoxContent').style.display = 'flex';
-    }
-
-    function toggleFav(el) {
-      const star = el.querySelector('svg');
-      if(star.style.fill === 'rgb(251, 185, 29)') {
-        star.style.fill = '#888';
-      } else {
-        star.style.fill = '#fbb91d';
-      }
-    }
-  </script>
 
 </body>
 </html>
