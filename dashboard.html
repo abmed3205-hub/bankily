@@ -3,50 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bankily - لوحة القيادة</title>
     <link rel="manifest" href="manifest.json">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body, html { width: 100%; height: 100%; background-color: #ffffff; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        
-        .app-screen { 
-            position: relative; 
-            width: 100%; 
-            max-width: 430px; 
-            height: 100vh; 
-        }
-        
-        .app-screen img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: fill; 
-            display: block; 
-        }
-        
-        /* زر تفاعلي شفاف فوق أيقونة "تحويل الأموال" في الصورة */
+        .app-screen { position: relative; width: 100%; max-width: 430px; height: 100vh; }
+        .app-screen img { width: 100%; height: 100%; object-fit: fill; display: block; }
         .hotspot-transfer {
             position: absolute;
-            top: 15%;     /* موقع الزر رأسياً في الصورة */
-            left: 35%;    /* موقع الزر أفقياً */
-            width: 30%;   /* عرض منطقة النقر */
-            height: 90px; /* ارتفاع منطقة النقر */
+            top: 15%;
+            left: 35%;
+            width: 30%;
+            height: 90px;
             background: transparent;
             cursor: pointer;
-            border: none;
         }
     </style>
 </head>
 <body>
-
     <div class="app-screen">
-        <!-- عرض صورة لوحة القيادة -->
         <img src="dashboard.png" alt="Dashboard">
-
-        <!-- رابط شفاف يوجه إلى صفحة تحويل الأموال عند النقر -->
         <a href="transfer.html" class="hotspot-transfer"></a>
     </div>
-
 </body>
 </html>
