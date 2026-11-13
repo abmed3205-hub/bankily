@@ -147,7 +147,7 @@
 
   <button class="submit-btn" onclick="processSend()">إرسال</button>
 
-  <script>
+    <script>
     function processSend() {
       const phone = document.getElementById('phone').value;
       const amount = document.getElementById('amount').value;
@@ -155,7 +155,8 @@
         alert('الرجاء إدخال رقم الهاتف والمبلغ');
         return;
       }
-      alert('تم إرسال طلب التحويل بنجاح إلى الرقم: ' + phone);
+      // الانتقال إلى شاشة تأكيد التحويل مع تمرير الرقم والمبلغ
+      window.location.href = `confirm-transfer.html?phone=${phone}&amount=${amount}`;
     }
   </script>
 
