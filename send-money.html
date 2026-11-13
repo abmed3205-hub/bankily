@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إرسال الأموال</title>
+<style>
+  :root {
+    --primary: #00bcd4;
+    --yellow: #fbb91d;
+    --text: #333;
+    --border: #ccc;
+    --gray-bg: #fff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* الهيدر العلوي */
+  .header { background: var(--primary); color: #fff; padding: 14px 16px 10px; }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
+  .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
+  .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
+  /* الأزرار الأربعة العلوية (من اليمين لليسار: رقم الهاتف، اسم المستخدم، بنك، فيسبوك) */
+  .tabs-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 8px;
+  }
+  .tab-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.7); font-size: 11px; text-decoration: none;
+    flex: 1; padding-bottom: 8px; border-bottom: 3px solid transparent;
+    cursor: pointer;
+  }
+  .tab-item.active {
+    color: #fff; border-bottom-color: #fff; font-weight: 600;
+  }
+  .tab-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* نموذج الإدخال */
+  .form-container {
+    padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; flex: 1;
+  }
+  .input-group {
+    display: flex; flex-direction: column; gap: 8px; position: relative;
+  }
+  .input-group label {
+    font-size: 14px; color: #555; text-align: right;
+  }
+  .input-wrapper {
+    position: relative; display: flex; align-items: center;
+  }
+  .input-group input {
+    width: 100%; padding: 12px 14px; border: 0; border-bottom: 1px solid var(--border);
+    font-size: 16px; outline: none; text-align: right; background: transparent;
+  }
+  .input-group input:focus { border-bottom-color: var(--primary); }
+  
+  /* أيقونة جهات الاتصال داخل حقل رقم الهاتف */
+  .contact-icon {
+    position: absolute; right: 4px; background: none; border: 0; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .contact-icon svg { width: 28px; height: 28px; stroke: var(--yellow); fill: none; stroke-width: 2; }
+
+  /* زر الإرسال السفلي الأصفر */
+  .submit-btn {
+    background: var(--yellow); color: #fff; border: 0; padding: 16px;
+    font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
+    text-align: center; margin-top: auto;
+  }
+  .submit-btn:active { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+  <!-- الهيدر والتبويبات العلوية -->
+  <header class="header">
+    <div class="header-top">
+      <!-- زر الرجوع لصفحة transfer.html -->
+      <a href="transfer.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+      </a>
+      <h1>إرسال الأموال</h1>
+      <div style="width: 24px;"></div>
+    </div>
+
+    <nav class="tabs-nav">
+      <div class="tab-item" onclick="alert('فيسبوك')">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        فيسبوك
+      </div>
+      <div class="tab-item" onclick="alert('بنك')">
+        <svg viewBox="0 0 32 32"><path d="M3 10h26M16 4l14 8H2l14-8zM5 14h22v12H5zM9 18h2v4H9zM15 18h2v4h-2zM21 18h2v4h-2z"/></svg>
+        بنك
+      </div>
+      <div class="tab-item" onclick="alert('اسم المستخدم')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        اسم المستخدم
+      </div>
+      <div class="tab-item active" onclick="alert('رقم الهاتف')">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+        رقم الهاتف
+      </div>
+    </nav>
+  </header>
+
+  <!-- حقول الإدخال -->
+  <div class="form-container">
+    <div class="input-group">
+      <label>رقم الهاتف</label>
+      <div class="input-wrapper">
+        <input type="tel" id="phone" placeholder="">
+        <button class="contact-icon" title="جهات الاتصال" onclick="alert فتح جهات الاتصال">
+          <svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M10 10h12M10 16h12M10 22h8"/><circle cx="12" cy="10" r="1" fill="var(--yellow)"/><circle cx="12" cy="16" r="1" fill="var(--yellow)"/><circle cx="12" cy="22" r="1" fill="var(--yellow)"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>المبلغ</label>
+      <input type="number" id="amount" placeholder="">
+    </div>
+
+    <div class="input-group">
+      <label>ملاحظة (اختياري)</label>
+      <input type="text" id="note" placeholder="">
+    </div>
+  </div>
+
+  <!-- زر الإرسال السفلي -->
+  <button class="submit-btn" onclick="processSend()">إرسال</button>
+
+  <script>
+    function processSend() {
+      const phone = document.getElementById('phone').value;
+      const amount = document.getElementById('amount').value;
+      if(!phone || !amount) {
+        alert('الرجاء إدخال رقم الهاتف والمبلغ');
+        return;
+      }
+      alert('تم إرسال طلب التحويل بنجاح إلى الرقم: ' + phone);
+    }
+  </script>
+
+</body>
+</html>
