@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Bankily - لوحة القيادة</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00bcd4;
+            --primary-dark: #0097a7;
+            --bg-main: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 24px rgba(0, 188, 212, 0.12);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            max-height: 932px;
+            background-color: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.15);
+        }
+
+        /* الهيدر العلوي */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
+            padding: 20px 20px 25px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-top h1 {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* الكروت الثلاثة في الهيدر */
+        .quick-actions-top {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .top-action-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: 12px 6px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-action-card i {
+            font-size: 20px;
+        }
+
+        .top-action-card span {
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+
+        /* محتوى الشبكة الرئيسي */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .grid-services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 16px 8px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+        }
+
+        .service-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(0, 188, 212, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .service-card span {
+            font-size: 11.5px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            background: var(--card-bg);
+            height: 65px;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- الهيدر -->
+        <header class="app-header">
+            <div class="header-top">
+                <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <h1>لوحة القيادة</h1>
+                <div style="width: 40px;"></div>
+            </div>
+
+            <div class="quick-actions-top">
+                <a href="#" class="top-action-card">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>حسابي</span>
+                </a>
+                <a href="#" class="top-action-card">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>تحويل الأموال</span>
+                </a>
+                <a href="#" class="top-action-card">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>تسديد مشتريات</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- المحتوى -->
+        <main class="app-content">
+            <div class="grid-services">
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <span>تعبئة رصيد الهاتف</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <span>تسديد الفواتير</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-book"></i></div>
+                    <span>طلب دفتر شيكات</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-store"></i></div>
+                    <span>ب-باي</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <span>سحب النقود</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-credit-card"></i></div>
+                    <span>البطاقات البنكية</span>
+                </a>
+                <a href="#" class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <span>جيمتيل</span>
+                </a>
+            </div>
+        </main>
+
+        <!-- الشريط السفلي -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>المساعدة</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-bell"></i>
+                <span>الإشعارات</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-star"></i>
+                <span>المفضلة</span>
+            </a>
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </a>
+        </nav>
+    </div>
+
+</body>
+</html>
