@@ -9,8 +9,9 @@
     --primary: #00bcd4;
     --yellow: #fbb91d;
     --text: #333;
-    --border: #e0e0e0;
-    --gray-bg: #f8f9fa;
+    --border: #dcdcdc;
+    --card-bg: #f2f3f5; /* الخلفية الرمادية الفاتحة تماماً كالأصل */
+    --gray-bg: #fff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,7 +41,7 @@
     font-size: 13px; color: #666; text-align: left;
   }
 
-  /* بيانات المستلم: الرقم يمين والأيقونة يسار تماماً */
+  /* بيانات المستلم: الرقم في اليمين والأيقونة في اليسار */
   .recipient-box {
     display: flex; align-items: center; justify-content: space-between;
     padding: 6px 4px;
@@ -49,29 +50,29 @@
     font-size: 18px; font-weight: 700; color: #111; letter-spacing: 1px; direction: ltr;
   }
   .recipient-icon {
-    width: 42px; height: 42px; background: #6c757d; border-radius: 50%;
+    width: 42px; height: 42px; background: #5a6b7c; border-radius: 50%;
     display: grid; place-items: center;
   }
   .recipient-icon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; }
 
-  /* صندوق التفاصيل والرسوم */
+  /* صندوق التفاصيل والرسوم ذو الخلفية الرمادية الفاتحة */
   .details-card {
-    background: #fff; border-radius: 8px; border: 1px solid var(--border);
-    overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); margin-top: 6px;
+    background: var(--card-bg); border-radius: 6px; border: 1px solid var(--border);
+    overflow: hidden; margin-top: 4px;
   }
   .amount-row {
-    padding: 18px 16px; border-bottom: 1px solid var(--border);
-    display: flex; flex-direction: column; gap: 6px; text-align: right;
+    padding: 16px 16px; border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px; text-align: right;
   }
   .amount-label { font-size: 13px; color: #666; text-align: right; }
   .amount-value { font-size: 18px; font-weight: 700; color: #111; text-align: right; direction: ltr; }
 
   .fees-section { padding: 16px; }
-  .fees-title { font-size: 13px; color: #555; margin-bottom: 16px; text-align: right; }
+  .fees-title { font-size: 13px; color: #555; margin-bottom: 14px; text-align: right; }
   
   .fee-item {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px; font-size: 14px; color: #333;
+    margin-bottom: 12px; font-size: 14px; color: #333;
   }
   .fee-item:last-child { margin-bottom: 0; }
   .fee-left { direction: ltr; font-weight: 500; }
@@ -101,7 +102,7 @@
   <div class="content">
     <div class="review-title">مراجعة التفاصيل المدخلة</div>
 
-    <!-- رقم المستلم في اليمين والأيقونة في اليسار -->
+    <!-- رقم المستلم -->
     <div class="recipient-box">
       <span class="recipient-phone" id="display-phone">36654787</span>
       <div class="recipient-icon">
@@ -109,7 +110,7 @@
       </div>
     </div>
 
-    <!-- صندوق تفاصيل المبلغ والرسوم -->
+    <!-- الصندوق الرمادي الفاتح للتفاصيل والرسوم -->
     <div class="details-card">
       <div class="amount-row">
         <span class="amount-label">المبلغ</span>
