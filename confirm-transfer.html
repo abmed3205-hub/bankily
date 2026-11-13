@@ -37,16 +37,16 @@
   .content { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 20px; }
   
   .review-title {
-    font-size: 13px; color: #666; text-align: left;
+    font-size: 13px; color: #666; text-align: right;
   }
 
-  /* بيانات المستلم */
+  /* بيانات المستلم (الأيقونة يمين ورقم الهاتف يسارها) */
   .recipient-box {
-    display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+    display: flex; align-items: center; justify-content: flex-start; gap: 12px;
     padding: 10px 0;
   }
   .recipient-phone {
-    font-size: 18px; font-weight: 700; color: #111; letter-spacing: 1px;
+    font-size: 18px; font-weight: 700; color: #111; letter-spacing: 1px; direction: ltr;
   }
   .recipient-icon {
     width: 40px; height: 40px; background: #e0e0e0; border-radius: 50%;
@@ -99,34 +99,34 @@
   <div class="content">
     <div class="review-title">مراجعة التفاصيل المدخلة</div>
 
-    <!-- رقم المستلم -->
+    <!-- رقم المستلم (الأيقونة في اليمين ورقم الهاتف بجانبها) -->
     <div class="recipient-box">
-      <span class="recipient-phone" id="display-phone">36654787</span>
       <div class="recipient-icon">
         <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
       </div>
+      <span class="recipient-phone" id="display-phone">36654787</span>
     </div>
 
     <!-- صندوق تفاصيل المبلغ والرسوم -->
     <div class="details-card">
       <div class="amount-row">
-        <span class="amount-value" id="display-amount">MRU 2 000</span>
         <span class="amount-label">المبلغ</span>
+        <span class="amount-value" id="display-amount">MRU 2 000</span>
       </div>
       
       <div class="fees-section">
         <div class="fees-title">توزيع الرسوم:</div>
         <div class="fee-item">
-          <span>MRU 4.31</span>
           <span>تكلفة الخدمة</span>
+          <span>MRU 4.31</span>
         </div>
         <div class="fee-item">
-          <span>MRU 0</span>
           <span>عمولة</span>
+          <span>MRU 0</span>
         </div>
         <div class="fee-item">
-          <span>MRU 0.86</span>
           <span>ضريبة</span>
+          <span>MRU 0.86</span>
         </div>
       </div>
     </div>
@@ -136,7 +136,6 @@
   <a href="index.html" class="submit-btn" onclick="alert('تم إتمام عملية التحويل بنجاح!')">تم</a>
 
   <script>
-    // جلب البيانات المدخلة من الصفحة السابقة إذا توفرت
     const urlParams = new URLSearchParams(window.location.search);
     const phone = urlParams.get('phone');
     const amount = urlParams.get('amount');
