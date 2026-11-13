@@ -34,10 +34,10 @@
   .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
   .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
 
-  /* الأزرار الأربعة العلوية (من اليمين لليسار: رقم الهاتف، اسم المستخدم، بنك، فيسبوك) */
+  /* الترتيب الصحيح للتبويبات الأربعة من اليمين: رقم الهاتف، اسم المستخدم، بنك، فيسبوك */
   .tabs-nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 8px;
+    padding: 0 8px; flex-direction: row-reverse;
   }
   .tab-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -69,14 +69,12 @@
   }
   .input-group input:focus { border-bottom-color: var(--primary); }
   
-  /* أيقونة جهات الاتصال داخل حقل رقم الهاتف */
   .contact-icon {
     position: absolute; right: 4px; background: none; border: 0; cursor: pointer;
     display: grid; place-items: center;
   }
   .contact-icon svg { width: 28px; height: 28px; stroke: var(--yellow); fill: none; stroke-width: 2; }
 
-  /* زر الإرسال السفلي الأصفر */
   .submit-btn {
     background: var(--yellow); color: #fff; border: 0; padding: 16px;
     font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
@@ -87,10 +85,8 @@
 </head>
 <body>
 
-  <!-- الهيدر والتبويبات العلوية -->
   <header class="header">
     <div class="header-top">
-      <!-- زر الرجوع لصفحة transfer.html -->
       <a href="transfer.html" class="back-btn">
         <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
       </a>
@@ -98,33 +94,33 @@
       <div style="width: 24px;"></div>
     </div>
 
+    <!-- الترتيب الصحيح من اليمين: رقم الهاتف (نشط)، اسم المستخدم، بنك، فيسبوك -->
     <nav class="tabs-nav">
-      <div class="tab-item" onclick="alert('فيسبوك')">
-        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        فيسبوك
-      </div>
-      <div class="tab-item" onclick="alert('بنك')">
-        <svg viewBox="0 0 32 32"><path d="M3 10h26M16 4l14 8H2l14-8zM5 14h22v12H5zM9 18h2v4H9zM15 18h2v4h-2zM21 18h2v4h-2z"/></svg>
-        بنك
+      <div class="tab-item active" onclick="alert('رقم الهاتف')">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+        رقم الهاتف
       </div>
       <div class="tab-item" onclick="alert('اسم المستخدم')">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         اسم المستخدم
       </div>
-      <div class="tab-item active" onclick="alert('رقم الهاتف')">
-        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-        رقم الهاتف
+      <div class="tab-item" onclick="alert('بنك')">
+        <svg viewBox="0 0 32 32"><path d="M3 10h26M16 4l14 8H2l14-8zM5 14h22v12H5zM9 18h2v4H9zM15 18h2v4h-2zM21 18h2v4h-2z"/></svg>
+        بنك
+      </div>
+      <div class="tab-item" onclick="alert('فيسبوك')">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        فيسبوك
       </div>
     </nav>
   </header>
 
-  <!-- حقول الإدخال -->
   <div class="form-container">
     <div class="input-group">
       <label>رقم الهاتف</label>
       <div class="input-wrapper">
         <input type="tel" id="phone" placeholder="">
-        <button class="contact-icon" title="جهات الاتصال" onclick="alert فتح جهات الاتصال">
+        <button class="contact-icon" title="جهات الاتصال" onclick="alert('جهات الاتصال')">
           <svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M10 10h12M10 16h12M10 22h8"/><circle cx="12" cy="10" r="1" fill="var(--yellow)"/><circle cx="12" cy="16" r="1" fill="var(--yellow)"/><circle cx="12" cy="22" r="1" fill="var(--yellow)"/></svg>
         </button>
       </div>
@@ -141,7 +137,6 @@
     </div>
   </div>
 
-  <!-- زر الإرسال السفلي -->
   <button class="submit-btn" onclick="processSend()">إرسال</button>
 
   <script>
