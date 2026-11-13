@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bankily - تأكيد العملية</title>
     <link rel="manifest" href="manifest.json">
     <style>
@@ -25,26 +23,24 @@
             display: block; 
         }
         
-        /* زر تفاعلي شفاف فوق زر تأكيد العملية في الصورة */
+        /* زر التأكيد (فعله!) في منتصف المربع الأبيض */
         .hotspot-confirm {
             position: absolute;
-            top: 75%;     /* عدل النسبة حسب مكان زر التأكيد في صورتك */
-            left: 7%;     /* موقع الزر أفقياً */
-            width: 86%;   /* عرض منطقة النقر */
-            height: 52px; /* ارتفاع منطقة النقر */
+            top: 62%;
+            left: 15%;
+            width: 70%;
+            height: 50px;
             background: transparent;
             cursor: pointer;
             border: none;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
     <div class="app-screen">
-        <!-- عرض صورة واجهة التأكيد (تأكد من اسم الصورة، مثلاً confirm.png أو confirm-transfer.png) -->
-        <img src="confirm.png" alt="Confirm Transfer">
-
-        <!-- رابط شفاف يوجه المستخدم إلى لوحة القيادة dashboard.html بعد التأكيد -->
+        <img src="confirm.png" alt="Confirm">
         <a href="dashboard.html" class="hotspot-confirm"></a>
     </div>
 
