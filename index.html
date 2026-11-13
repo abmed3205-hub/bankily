@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,19 +22,20 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    direction: rtl;
+    direction: ltr; /* التثبيت باتجاه لتر لضمان عدم انعكاس الشبكة */
   }
 
   /* الهيدر العلوي */
   .header { background: var(--primary); color: #fff; padding: 12px 14px 16px; }
   .header-top {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px; direction: ltr;
+    margin-bottom: 18px; direction: rtl;
   }
-  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; direction: rtl; }
+  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
   .menu-btn { background: none; border: 0; color: #fff; font-size: 26px; cursor: pointer; line-height: 1; }
   
-  .quick { display: flex; justify-content: space-between; padding: 0 2px; direction: ltr; }
+  /* الترتيب العلوي: (يمين) حسابي -> تحويل الأموال -> تسديد مشتريات (يسار) */
+  .quick { display: flex; justify-content: space-between; padding: 0 2px; direction: rtl; }
   .quick a {
     display: flex; flex-direction: column; align-items: center;
     gap: 6px; color: #fff; text-decoration: none; font-size: 12px; text-align: center; width: 32%;
@@ -46,19 +47,18 @@
   }
   .circle svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 1.6; }
 
-  /* شبكة البطاقات المتناسقة والمضغوطة */
+  /* شبكة البطاقات المربعة والمضبوطة تماماً */
   .grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 8px; padding: 12px; flex: 1; align-content: start;
-    direction: ltr;
+    direction: rtl; /* لضمان البدء من اليمين لليسار */
   }
   .card {
     border: 1px solid var(--border); border-radius: 6px; background: #fff;
-    aspect-ratio: 1 / 1; /* جعل البطاقات مربعة تماماً ومتناسقة */
+    aspect-ratio: 1 / 1;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 8px; text-decoration: none; color: var(--text);
     font-weight: 600; font-size: 12px; text-align: center; padding: 8px;
-    direction: rtl;
     transition: background .15s;
   }
   .card:active { background: #f1fbfd; }
@@ -73,11 +73,11 @@
   /* الشريط السفلي */
   .tabbar {
     display: flex; border-top: 1px solid #e5e5e5; background: #fff;
-    position: sticky; bottom: 0; padding: 8px 0 10px; direction: ltr;
+    position: sticky; bottom: 0; padding: 8px 0 10px; direction: rtl;
   }
   .tab {
     flex: 1; display: flex; flex-direction: column; align-items: center;
-    gap: 3px; font-size: 11px; color: #888; text-decoration: none; direction: rtl;
+    gap: 3px; font-size: 11px; color: #888; text-decoration: none;
   }
   .tab svg { width: 24px; height: 24px; fill: none; stroke: #888; stroke-width: 1.6; }
   .tab.active { color: var(--primary); }
@@ -88,83 +88,89 @@
 
   <header class="header">
     <div class="header-top">
-      <div style="width: 26px;"></div>
-      <h1>لوحة القيادة</h1>
       <button class="menu-btn" aria-label="القائمة">&#9776;</button>
+      <h1>لوحة القيادة</h1>
+      <div style="width: 26px;"></div>
     </div>
     <nav class="quick">
-      <a href="#">
-        <span class="circle">
-          <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M12 38h24"/></svg>
-        </span>
-        تسديد مشتريات
-      </a>
-      <a href="transfer.html">
-        <span class="circle">
-          <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="4"/><path d="M14 42h20m-5-4 5 4-5 4"/></svg>
-        </span>
-        تحويل الأموال
-      </a>
+      <!-- 1. حسابي (يمين) -->
       <a href="#">
         <span class="circle">
           <svg viewBox="0 0 48 48"><path d="M14 8h20v32l-4-3-3 3-3-3-3 3-3-3-4 3z"/><path d="M19 16h10M19 22h10M19 28h6"/></svg>
         </span>
         حسابي
       </a>
+      <!-- 2. تحويل الأموال (وسط) -->
+      <a href="transfer.html">
+        <span class="circle">
+          <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="4"/><path d="M14 42h20m-5-4 5 4-5 4"/></svg>
+        </span>
+        تحويل الأموال
+      </a>
+      <!-- 3. تسديد مشتريات (يسار) -->
+      <a href="#">
+        <span class="circle">
+          <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M12 38h24"/></svg>
+        </span>
+        تسديد مشتريات
+      </a>
     </nav>
   </header>
 
   <main class="grid">
+    <!-- السطر الأول: من اليمين لليسار (طلب دفتر شيكات، تسديد الفواتير، تعبئة رصيد الهاتف) -->
     <a href="#" class="card blue">
-      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M24 34V20m-6 5 6-6 6 6M20 40h8"/></svg>
-      تعبئة رصيد الهاتف
+      <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
+      طلب دفتر شيكات
     </a>
     <a href="#" class="card yellow">
       <svg viewBox="0 0 48 48"><path d="M12 6h24v36H12z"/><path d="M18 14h12M18 20h12M18 26h8"/></svg>
       تسديد الفواتير
     </a>
     <a href="#" class="card blue">
-      <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
-      طلب دفتر شيكات
+      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M24 34V20m-6 5 6-6 6 6M20 40h8"/></svg>
+      تعبئة رصيد الهاتف
     </a>
 
+    <!-- السطر الثاني: من اليمين لليسار (البطاقات البنكية، سحب النقود، ب-باي) -->
     <a href="#" class="card yellow">
-      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M17 14h14l-2 10H19zM20 30h8"/></svg>
-      ب-باي
+      <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
+      البطاقات البنكية
     </a>
     <a href="#" class="card blue">
       <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="8" rx="1"/><path d="M16 14v22h16V14M20 20h8M20 26h8"/></svg>
       سحب النقود
     </a>
     <a href="#" class="card yellow">
-      <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
-      البطاقات البنكية
+      <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M17 14h14l-2 10H19zM20 30h8"/></svg>
+      ب-باي
     </a>
 
-    <div></div>
-    <div></div>
+    <!-- السطر الثالث: جيمتيل في اليمين -->
     <a href="#" class="card">
       <span class="g-icon">G</span>
       جيمتيل
     </a>
+    <div></div>
+    <div></div>
   </main>
 
   <nav class="tabbar">
+    <a href="#" class="tab active">
+      <svg viewBox="0 0 32 32"><path d="M4 16 16 5l12 11M8 14v13h6v-8h4v8h6V14"/></svg>
+      الرئيسية
+    </a>
     <a href="#" class="tab">
-      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12 12.5a4 4 0 1 1 5.5 3.7c-1 .5-1.5 1.2-1.5 2.3M16 23v.5"/></svg>
-      المساعدة
+      <svg viewBox="0 0 32 32"><path d="m16 4 3.7 7.6 8.3 1.2-6 5.9 1.4 8.3L16 23l-7.4 4 1.4-8.3-6-5.9 8.3-1.2z"/></svg>
+      المفضلة
     </a>
     <a href="#" class="tab">
       <svg viewBox="0 0 32 32"><path d="M8 24V14a8 8 0 0 1 16 0v10l2 2H6zM13 28h6"/></svg>
       الاشعارات
     </a>
     <a href="#" class="tab">
-      <svg viewBox="0 0 32 32"><path d="m16 4 3.7 7.6 8.3 1.2-6 5.9 1.4 8.3L16 23l-7.4 4 1.4-8.3-6-5.9 8.3-1.2z"/></svg>
-      المفضلة
-    </a>
-    <a href="#" class="tab active">
-      <svg viewBox="0 0 32 32"><path d="M4 16 16 5l12 11M8 14v13h6v-8h4v8h6V14"/></svg>
-      الرئيسية
+      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12 12.5a4 4 0 1 1 5.5 3.7c-1 .5-1.5 1.2-1.5 2.3M16 23v.5"/></svg>
+      المساعدة
     </a>
   </nav>
 
