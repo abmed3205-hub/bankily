@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحويل أموال</title>
+<style>
+  :root {
+    --primary: #00bcd4;
+    --dark: #00879a;
+    --yellow: #ffc107;
+    --gray: #f3f3f3;
+    --text: #222;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  .transfer-header { background: var(--primary); color: #fff; padding: 14px 14px 24px; }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 22px; direction: ltr;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; direction: rtl; }
+  .back-btn { background: none; border: 0; cursor: pointer; }
+  .back-btn svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 3; }
+
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; direction: rtl; }
+  .action {
+    height: 180px; border-radius: 4px; color: #fff; text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; font-size: 16px; font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .action.send { background: var(--dark); }
+  .action.request { background: var(--yellow); }
+  .action svg { width: 70px; height: 35px; fill: #fff; }
+
+  .section-title {
+    background: var(--gray); text-align: center; padding: 18px 10px;
+    font-size: 17px; font-weight: 700; color: #000;
+  }
+  .section-title.light { font-weight: 400; color: #555; padding: 14px 10px; font-size: 16px; }
+
+  .qr {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; padding: 26px 0 20px; text-decoration: none; color: #000;
+    font-weight: 700; font-size: 16px;
+  }
+  .qr svg { width: 44px; height: 44px; fill: var(--primary); }
+
+  .board { padding: 20px 18px; text-align: center; }
+  .board p { font-size: 13px; color: #444; margin-bottom: 20px; }
+  .add-btn {
+    width: 110px; height: 110px; border: 2px dashed var(--primary);
+    border-radius: 16px; background: #fff; cursor: pointer;
+    display: grid; place-items: center; margin: 0 auto;
+  }
+  .add-btn svg { width: 40px; height: 40px; stroke: var(--primary); stroke-width: 4; stroke-linecap: round; }
+</style>
+</head>
+<body>
+
+  <header class="transfer-header">
+    <div class="header-top">
+      <button class="back-btn" aria-label="رجوع">
+        <a href="index.html">
+          <svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8" stroke="#fff"/></svg>
+        </a>
+      </button>
+      <h1>تحويل أموال</h1>
+      <div style="width: 26px;"></div>
+    </div>
+
+    <div class="actions">
+      <a href="#" class="action request">
+        <svg viewBox="0 0 90 40">
+          <path d="M2 20 16 8v7h8v10h-8v7z"/>
+          <path d="M30 4h50l-6 32H26z"/>
+          <circle cx="54" cy="20" r="11" fill="#ffc107"/>
+          <text x="54" y="26" text-anchor="middle" font-size="16" fill="#fff" font-weight="700">د.م</text>
+        </svg>
+        طلب المال
+      </a>
+      <a href="#" class="action send">
+        <svg viewBox="0 0 90 40">
+          <path d="M2 4h30l-3 6H2zM8 17h24l-3 6H8zM2 30h30l-3 6H2z"/>
+          <path d="M38 4h42l-6 32H32z" opacity=".95"/>
+          <circle cx="58" cy="20" r="11" fill="#00879a"/>
+          <text x="58" y="26" text-anchor="middle" font-size="16" fill="#fff" font-weight="700">د.م</text>
+        </svg>
+        إرسال الأموال
+      </a>
+    </div>
+  </header>
+
+  <div class="section-title">التحويل السريع</div>
+
+  <a href="#" class="qr">
+    <svg viewBox="0 0 52 52">
+      <path d="M2 2h14v14H2zM20 2h14v10H20zM38 2h12v14H38zM2 20h10v12H2zM16 20h14v10H16zM34 18h16v14H34zM20 34h14v16H20zM2 36h14v14H2zM38 36h12v14H38z" opacity=".95"/>
+      <path d="M7 7h4v4H7zM25 6h5v3h-5zM7 41h4v4H7zM43 41h4v4h-4z" fill="#fff"/>
+    </svg>
+    رمز QR
+  </a>
+
+  <div class="section-title light">اللوحة</div>
+
+  <section class="board">
+    <p>أنشئ مجموعة جديدة أو حدد مجموعة حالية لتقسيم اللوحة.</p>
+    <button class="add-btn" aria-label="إضافة مجموعة">
+      <svg viewBox="0 0 46 46"><path d="M23 6v34M6 23h34"/></svg>
+    </button>
+  </section>
+
+</body>
+</html>
 
