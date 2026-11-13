@@ -125,11 +125,11 @@
     text-align: center; display: block;
   }
 
-  /* لوحة مفاتيح الأرقام بالترتيب الصحيح (1 إلى 9) */
+  /* لوحة المفاتيح الرقمية */
   .custom-keypad {
     background: #d1d5db; width: 100%; max-width: 480px; padding: 8px;
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-    margin: 0 auto; direction: ltr; /* لضمان ترتيب المفاتيح 1, 2, 3 يميناً ويساراً بشكل صحيح */
+    margin: 0 auto; direction: ltr;
   }
   .key-btn {
     background: #fff; border: 0; border-radius: 4px; padding: 14px 0;
@@ -139,11 +139,17 @@
   .key-btn:active { background: #e0e0e0; }
   .key-btn svg { width: 24px; height: 24px; stroke: #333; fill: none; stroke-width: 2; }
 
+  /* نافذة النجاح المطابقة للصورة تماماً */
   .success-box {
     background: #fff; width: 100%; max-width: 360px; border-radius: 6px;
     overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
     text-align: center; display: none; flex-direction: column;
   }
+  .favorite-row {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin: 12px 0 16px; font-size: 13px; color: #555; cursor: pointer;
+  }
+  .favorite-row svg { width: 16px; height: 16px; fill: #888; transition: fill 0.2s; }
 </style>
 </head>
 <body>
@@ -216,22 +222,29 @@
         <button class="pin-submit-btn" onclick="submitPin()">ارسل طلب</button>
       </div>
 
+      <!-- نافذة النجاح مع خيار تعيين كمفضل -->
       <div class="success-box" id="successBoxContent">
         <div style="font-size: 18px; font-weight: 700; color: #222; margin: 24px 0 16px;">النقل ناجح!</div>
         <div style="width: 60px; height: 60px; border: 3px solid #4CAF50; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center;">
           <svg style="width: 34px; height: 34px; stroke: #4CAF50; fill: none; stroke-width: 3;" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
-        <div style="padding: 0 20px 20px; font-size: 13px; color: #444; text-align: right; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; direction: rtl;">
+        <div style="padding: 0 20px; font-size: 13px; color: #444; text-align: right; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; direction: rtl;">
           <div>المستفيد: <span id="m-phone">43426516</span> المبلغ المرسل: <span id="m-amount">MRU 690</span></div>
           <div>معرف المعاملة: <span id="m-tx">022611220573200000</span></div>
           <div>التاريخ والوقت: <span id="m-datetime">26-11-12 20:57:33</span></div>
         </div>
+        
+        <!-- خيار تعيين كمفضل مع أيقونة النجمة -->
+        <div class="favorite-row" onclick="toggleFav(this)">
+          <svg id="fav-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>تعيين كمفضل</span>
+        </div>
+
         <a href="index.html" style="background: var(--primary); color: #fff; border: 0; padding: 14px; font-size: 16px; font-weight: 600; text-align: center; text-decoration: none; display: block;">فعلة!</a>
       </div>
 
     </div>
 
-    <!-- لوحة المفاتيح بالترتيب الصحيح المطابق لصورتك تماماً -->
     <div class="custom-keypad" id="numericKeypad">
       <button class="key-btn" onclick="pressKey('1')">1</button>
       <button class="key-btn" onclick="pressKey('2')">2</button>
@@ -326,6 +339,15 @@
       document.getElementById('m-datetime').textContent = dtStr;
 
       document.getElementById('successBoxContent').style.display = 'flex';
+    }
+
+    function toggleFav(el) {
+      const star = el.querySelector('svg');
+      if(star.style.fill === 'rgb(251, 185, 29)') {
+        star.style.fill = '#888';
+      } else {
+        star.style.fill = '#fbb91d';
+      }
     }
   </script>
 
