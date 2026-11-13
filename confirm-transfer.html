@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تأكيد تحويل الأموال</title>
+<style>
+  :root {
+    --primary: #00bcd4;
+    --yellow: #fbb91d;
+    --text: #333;
+    --border: #e0e0e0;
+    --gray-bg: #f8f9fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* الهيدر العلوي */
+  .header { background: var(--primary); color: #fff; padding: 14px 16px; }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
+  .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
+  .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
+  /* محتوى الصفحة */
+  .content { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 20px; }
+  
+  .review-title {
+    font-size: 13px; color: #666; text-align: left;
+  }
+
+  /* بيانات المستلم */
+  .recipient-box {
+    display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+    padding: 10px 0;
+  }
+  .recipient-phone {
+    font-size: 18px; font-weight: 700; color: #111; letter-spacing: 1px;
+  }
+  .recipient-icon {
+    width: 40px; height: 40px; background: #e0e0e0; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .recipient-icon svg { width: 22px; height: 22px; stroke: #333; fill: none; stroke-width: 2; }
+
+  /* صندوق التفاصيل والرسوم */
+  .details-card {
+    background: #fff; border-radius: 8px; border: 1px solid var(--border);
+    overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .amount-row {
+    padding: 18px 16px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .amount-label { font-size: 14px; color: #666; }
+  .amount-value { font-size: 18px; font-weight: 700; color: #111; }
+
+  .fees-section { padding: 16px; }
+  .fees-title { font-size: 13px; color: #555; margin-bottom: 14px; text-align: right; }
+  
+  .fee-item {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; font-size: 14px; color: #444;
+  }
+  .fee-item:last-child { margin-bottom: 0; }
+
+  /* زر "تم" السفلي */
+  .submit-btn {
+    background: var(--yellow); color: #fff; border: 0; padding: 16px;
+    font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
+    text-align: center; margin-top: auto; text-decoration: none; display: block;
+  }
+  .submit-btn:active { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-top">
+      <a href="send-money.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+      </a>
+      <h1>تأكيد تحويل الأموال</h1>
+      <div style="width: 24px;"></div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="review-title">مراجعة التفاصيل المدخلة</div>
+
+    <!-- رقم المستلم -->
+    <div class="recipient-box">
+      <span class="recipient-phone" id="display-phone">36654787</span>
+      <div class="recipient-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+      </div>
+    </div>
+
+    <!-- صندوق تفاصيل المبلغ والرسوم -->
+    <div class="details-card">
+      <div class="amount-row">
+        <span class="amount-value" id="display-amount">MRU 2 000</span>
+        <span class="amount-label">المبلغ</span>
+      </div>
+      
+      <div class="fees-section">
+        <div class="fees-title">توزيع الرسوم:</div>
+        <div class="fee-item">
+          <span>MRU 4.31</span>
+          <span>تكلفة الخدمة</span>
+        </div>
+        <div class="fee-item">
+          <span>MRU 0</span>
+          <span>عمولة</span>
+        </div>
+        <div class="fee-item">
+          <span>MRU 0.86</span>
+          <span>ضريبة</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- زر تم -->
+  <a href="index.html" class="submit-btn" onclick="alert('تم إتمام عملية التحويل بنجاح!')">تم</a>
+
+  <script>
+    // جلب البيانات المدخلة من الصفحة السابقة إذا توفرت
+    const urlParams = new URLSearchParams(window.location.search);
+    const phone = urlParams.get('phone');
+    const amount = urlParams.get('amount');
+    
+    if(phone) document.getElementById('display-phone').textContent = phone;
+    if(amount) document.getElementById('display-amount').textContent = 'MRU ' + amount;
+  </script>
+
+</body>
+</html>
