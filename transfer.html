@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحويل أموال</title>
+<style>
+  :root {
+    --primary: #00bcd4;
+    --yellow: #fbb91d;
+    --blue-card: #1ba9c9;
+    --text: #333;
+    --border: #e0e0e0;
+    --gray-bg: #f8f9fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* الهيدر العلوي */
+  .header { background: var(--primary); color: #fff; padding: 14px 16px; }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 600; margin: 0 auto; }
+  .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; }
+  .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
+  /* قسم البطابتين الكبريين في الأعلى */
+  .top-cards-container {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; padding: 16px; background: #fff;
+  }
+  .big-card {
+    border-radius: 8px; padding: 20px 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; text-decoration: none; color: #fff;
+    font-weight: 700; font-size: 15px; text-align: center;
+    cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .big-card.yellow { background: var(--yellow); color: #fff; }
+  .big-card.blue { background: var(--blue-card); }
+  .big-card svg { width: 40px; height: 40px; fill: #fff; stroke: none; }
+
+  /* قسم التحويل السريع */
+  .section-title {
+    font-size: 15px; font-weight: 600; text-align: center;
+    margin: 16px 0 10px; color: #111;
+  }
+
+  .qr-box {
+    background: #fff; margin: 0 16px; border-radius: 8px; padding: 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; border: 1px solid var(--border); cursor: pointer;
+  }
+  .qr-box svg { width: 36px; height: 36px; stroke: #00bcd4; fill: none; stroke-width: 2; }
+  .qr-box span { font-size: 14px; font-weight: 600; color: #333; }
+
+  /* قسم اللوحة */
+  .board-section {
+    padding: 16px; text-align: center; margin-top: 10px;
+  }
+  .board-desc {
+    font-size: 12px; color: #666; margin-bottom: 16px;
+  }
+  .add-board-btn {
+    width: 64px; height: 64px; border: 2px dashed #00bcd4; border-radius: 12px;
+    background: #fff; display: inline-grid; place-items: center; cursor: pointer;
+    margin: 0 auto;
+  }
+  .add-board-btn svg { width: 32px; height: 32px; stroke: #00bcd4; fill: none; stroke-width: 2.5; }
+</style>
+</head>
+<body>
+
+  <!-- الهيدر -->
+  <header class="header">
+    <div class="header-top">
+      <div style="width: 24px;"></div>
+      <h1>تحويل أموال</h1>
+      <!-- زر الرجوع للواجهة الرئيسية index.html -->
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- البطاقتان الكبريان في الأعلى -->
+  <div class="top-cards-container">
+    <!-- طلب المال (يسار) -->
+    <a href="javascript:void(0);" onclick="alert('طلب المال قيد الانشاء')" class="big-card yellow">
+      <svg viewBox="0 0 48 48"><path d="M12 24h24m-12-12l12 12-12 12" stroke="#fff" stroke-width="3" fill="none"/></svg>
+      طلب المال
+    </a>
+    <!-- إرسال الأموال (يمين) -->
+    <a href="javascript:void(0);" onclick="alert('شاشة إرسال الأموال')" class="big-card blue">
+      <svg viewBox="0 0 48 48"><path d="M36 24H12m12-12L12 24l12 12" stroke="#fff" stroke-width="3" fill="none"/></svg>
+      إرسال الأموال
+    </a>
+  </div>
+
+  <!-- التحويل السريع -->
+  <div class="section-title">التحويل السريع</div>
+  
+  <div class="qr-box" onclick="alert('مسح رمز QR')">
+    <svg viewBox="0 0 48 48"><rect x="6" y="6" width="14" height="14" rx="2"/><rect x="28" y="6" width="14" height="14" rx="2"/><rect x="6" y="28" width="14" height="14" rx="2"/><path d="M28 28h6v6h-6zM38 38h4v4h-4zM28 38h4v4h-4zM38 28h4v4h-4z"/></svg>
+    <span>رمز QR</span>
+  </div>
+
+  <!-- اللوحة -->
+  <div class="section-title" style="margin-top: 24px;">اللوحة</div>
+  
+  <div class="board-section">
+    <p class="board-desc">أنشئ مجموعة جديدة أو حدد مجموعة حالية لتقسيم اللوحة.</p>
+    <div class="add-board-btn" onclick="alert('إضافة مجموعة جديدة للوحة')">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+  </div>
+
+</body>
+</html>
