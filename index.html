@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محاكاة التطبيق</title>
+<style>
+  :root {
+    --primary: #00bcd4;
+    --yellow: #fbb91d;
+    --blue: #1ba9c9;
+    --dark: #00879a;
+    --text: #333;
+    --border: #cfcfcf;
+    --gray: #f3f3f3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #fff;
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* إخفاء وإظهار الصفحات */
+  .page { display: none; flex: 1; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* --- الصفحة الأولى (لوحة القيادة) --- */
+  .header { background: var(--primary); color: #fff; padding: 14px 16px 18px; }
+  .header-top {
+    display: flex; align-items: center; justify-content: center;
+    position: relative; margin-bottom: 22px;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 600; }
+  .menu-btn {
+    position: absolute; left: 4px; background: none; border: 0;
+    color: #fff; font-size: 28px; cursor: pointer; line-height: 1;
+  }
+  .quick { display: flex; justify-content: space-between; padding: 0 8px; }
+  .quick a {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; color: #fff; text-decoration: none; font-size: 15px; width: 33%;
+  }
+  .circle {
+    width: 78px; height: 78px; border-radius: 50%;
+    background: #4d8fa0; border: 2px solid #e6c84f;
+    display: grid; place-items: center;
+  }
+  .circle svg { width: 42px; height: 42px; stroke: #fff; fill: none; stroke-width: 1.6; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; padding: 20px 14px; flex: 1; align-content: start;
+  }
+  .card {
+    border: 1px solid var(--border); border-radius: 4px; background: #fff;
+    aspect-ratio: 1 / 0.95;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; text-decoration: none; color: var(--text);
+    font-weight: 600; font-size: 14px; text-align: center; padding: 6px;
+    transition: background .15s;
+  }
+  .card:active { background: #f1fbfd; }
+  .card svg { width: 54px; height: 54px; fill: none; stroke-width: 2; }
+  .blue svg { stroke: var(--blue); }
+  .yellow svg { stroke: var(--yellow); }
+  .g-icon {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--blue);
+    color: #fff; display: grid; place-items: center; font-size: 34px; font-weight: 700;
+  }
+
+  .tabbar {
+    display: flex; border-top: 1px solid #e5e5e5; background: #fff;
+    position: sticky; bottom: 0; padding: 10px 0 12px;
+  }
+  .tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; font-size: 12px; color: #888; text-decoration: none;
+  }
+  .tab svg { width: 30px; height: 30px; fill: none; stroke: #888; stroke-width: 1.6; }
+  .tab.active { color: var(--primary); }
+  .tab.active svg { stroke: var(--primary); }
+
+  /* --- الصفحة الثانية (تحويل الأموال) --- -->
+  .transfer-header { background: var(--primary); color: #fff; padding: 14px 14px 28px; }
+  .back-btn {
+    position: absolute; left: 6px; background: none; border: 0; cursor: pointer;
+  }
+  .back-btn svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 3; }
+
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .action {
+    height: 226px; border-radius: 4px; color: #fff; text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 22px; font-size: 18px; font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .action.send { background: var(--dark); }
+  .action.request { background: var(--yellow); }
+  .action svg { width: 90px; height: 40px; fill: #fff; }
+
+  .section-title {
+    background: var(--gray); text-align: center; padding: 22px 10px;
+    font-size: 19px; font-weight: 700; color: #000;
+  }
+  .section-title.light { font-weight: 400; color: #555; padding: 18px 10px; font-size: 18px; }
+
+  .qr {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px; padding: 36px 0 30px; text-decoration: none; color: #000;
+    font-weight: 700; font-size: 18px;
+  }
+  .qr svg { width: 52px; height: 52px; fill: var(--primary); }
+
+  .board { padding: 24px 18px; }
+  .board p { text-align: center; font-size: 14px; color: #444; margin-bottom: 26px; }
+  .add-btn {
+    width: 130px; height: 130px; border: 2px dashed var(--primary);
+    border-radius: 16px; background: #fff; cursor: pointer;
+    display: grid; place-items: center; margin: 0 auto;
+  }
+  .add-btn svg { width: 46px; height: 46px; stroke: var(--primary); stroke-width: 5; stroke-linecap: round; }
+</style>
+</head>
+<body>
+
+  <!-- الصفحة الأولى: لوحة القيادة -->
+  <div id="page-dashboard" class="page active">
+    <header class="header">
+      <div class="header-top">
+        <h1>لوحة القيادة</h1>
+        <button class="menu-btn" aria-label="القائمة">&#9776;</button>
+      </div>
+      <nav class="quick">
+        <a href="#">
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M12 38h24"/></svg>
+          </span>
+          تسديد مشتريات
+        </a>
+        <!-- زر تحويل الأموال الذي سينقلك للصفحة الثانية -->
+        <a href="#" id="goto-transfer">
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="4"/><path d="M14 42h20m-5-4 5 4-5 4"/></svg>
+          </span>
+          تحويل الأموال
+        </a>
+        <a href="#">
+          <span class="circle">
+            <svg viewBox="0 0 48 48"><path d="M14 8h20v32l-4-3-3 3-3-3-3 3-3-3-4 3z"/><path d="M19 16h10M19 22h10M19 28h6"/></svg>
+          </span>
+          حسابي
+        </a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <a href="#" class="card blue">
+        <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M24 34V20m-6 5 6-6 6 6M20 40h8"/></svg>
+        تعبئة رصيد الهاتف
+      </a>
+      <a href="#" class="card yellow">
+        <svg viewBox="0 0 48 48"><path d="M12 6h24v36H12z"/><path d="M18 14h12M18 20h12M18 26h8"/></svg>
+        تسديد الفواتير
+      </a>
+      <a href="#" class="card blue">
+        <svg viewBox="0 0 48 48"><path d="M4 16h32v24H4z"/><path d="M10 24h20M10 31h14M38 6l4 4-14 20-5 2 2-5z"/></svg>
+        طلب دفتر شيكات
+      </a>
+      <a href="#" class="card yellow">
+        <svg viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="4"/><rect x="10" y="17" width="10" height="8" rx="1"/><path d="M26 30h14"/></svg>
+        البطاقات البنكية
+      </a>
+      <a href="#" class="card blue">
+        <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="8" rx="1"/><path d="M16 14v22h16V14M20 20h8M20 26h8"/></svg>
+        سحب النقود
+      </a>
+      <a href="#" class="card yellow">
+        <svg viewBox="0 0 48 48"><rect x="12" y="4" width="24" height="40" rx="3"/><path d="M17 14h14l-2 10H19zM20 30h8"/></svg>
+        ب-باي
+      </a>
+      <a href="#" class="card">
+        <span class="g-icon">G</span>
+        جيمتيل
+      </a>
+    </main>
+
+    <nav class="tabbar">
+      <a href="#" class="tab active">
+        <svg viewBox="0 0 32 32"><path d="M4 16 16 5l12 11M8 14v13h6v-8h4v8h6V14"/></svg>
+        الرئيسية
+      </a>
+      <a href="#" class="tab">
+        <svg viewBox="0 0 32 32"><path d="m16 4 3.7 7.6 8.3 1.2-6 5.9 1.4 8.3L16 23l-7.4 4 1.4-8.3-6-5.9 8.3-1.2z"/></svg>
+        المفضلة
+      </a>
+      <a href="#" class="tab">
+        <svg viewBox="0 0 32 32"><path d="M8 24V14a8 8 0 0 1 16 0v10l2 2H6zM13 28h6"/></svg>
+        الاشعارات
+      </a>
+      <a href="#" class="tab">
+        <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12 12.5a4 4 0 1 1 5.5 3.7c-1 .5-1.5 1.2-1.5 2.3M16 23v.5"/></svg>
+        المساعدة
+      </a>
+    </nav>
+  </div>
+
+
+  <!-- الصفحة الثانية: تحويل الأموال -->
+  <div id="page-transfer" class="page">
+    <header class="transfer-header">
+      <div class="header-top">
+        <h1>تحويل أموال</h1>
+        <!-- زر الرجوع للعودة للصفحة الرئيسية -->
+        <button class="back-btn" id="goto-dashboard" aria-label="رجوع">
+          <svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg>
+        </button>
+      </div>
+
+      <div class="actions">
+        <a href="#" class="action send">
+          <svg viewBox="0 0 90 40">
+            <path d="M2 4h30l-3 6H2zM8 17h24l-3 6H8zM2 30h30l-3 6H2z"/>
+            <path d="M38 4h42l-6 32H32z" opacity=".95"/>
+            <circle cx="58" cy="20" r="11" fill="#00879a"/>
+            <text x="58" y="26" text-anchor="middle" font-size="16" fill="#fff" font-weight="700">₹</text>
+          </svg>
+          إرسال الأموال
+        </a>
+        <a href="#" class="action request">
+          <svg viewBox="0 0 90 40">
+            <path d="M2 20 16 8v7h8v10h-8v7z"/>
+            <path d="M30 4h50l-6 32H26z"/>
+            <circle cx="54" cy="20" r="11" fill="#ffc107"/>
+            <text x="54" y="26" text-anchor="middle" font-size="16" fill="#fff" font-weight="700">₹</text>
+          </svg>
+          طلب المال
+        </a>
+      </div>
+    </header>
+
+    <div class="section-title">التحويل السريع</div>
+
+    <a href="#" class="qr">
+      <svg viewBox="0 0 52 52">
+        <path d="M2 2h14v14H2zM20 2h14v10H20zM38 2h12v14H38zM2 20h10v12H2zM16 20h14v10H16zM34 18h16v14H34zM20 34h14v16H20zM2 36h14v14H2zM38 36h12v14H38z" opacity=".95"/>
+        <path d="M7 7h4v4H7zM25 6h5v3h-5zM7 41h4v4H7zM43 41h4v4h-4z" fill="#fff"/>
+      </svg>
+      رمز QR
+    </a>
+
+    <div class="section-title light">اللوحة</div>
+
+    <section class="board">
+      <p>أنشئ مجموعة جديدة أو حدد مجموعة حالية لتقسيم اللوحة.</p>
+      <button class="add-btn" aria-label="إضافة مجموعة">
+        <svg viewBox="0 0 46 46"><path d="M23 6v34M6 23h34"/></svg>
+      </button>
+    </section>
+  </div>
+
+  <!-- سكربت بسيط للتحكم بالانتقال بين الصفحات -->
+  <script>
+    const dashboardPage = document.getElementById('page-dashboard');
+    const transferPage = document.getElementById('page-transfer');
+    const gotoTransferBtn = document.getElementById('goto-transfer');
+    const gotoDashboardBtn = document.getElementById('goto-dashboard');
+
+    // الانتقال لصفحة تحويل الأموال
+    gotoTransferBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboardPage.classList.remove('active');
+      transferPage.classList.add('active');
+      window.scrollTo(0, 0);
+    });
+
+    // العودة للوحة القيادة
+    gotoDashboardBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      transferPage.classList.remove('active');
+      dashboardPage.classList.add('active');
+      window.scrollTo(0, 0);
+    });
+  </script>
+
+</body>
+</html>
