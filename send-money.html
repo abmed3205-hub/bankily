@@ -34,10 +34,10 @@
   .back-btn { background: none; border: 0; color: #fff; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
   .back-btn svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; }
 
-  /* الترتيب الصحيح للتبويبات الأربعة من اليمين: رقم الهاتف، اسم المستخدم، بنك، فيسبوك */
+  /* الترتيب الصحيح للتبويبات الأربعة تماماً مثل الصورة الأصلية: فيسبوك، بنك، اسم المستخدم، رقم الهاتف */
   .tabs-nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 8px; flex-direction: row-reverse;
+    padding: 0 8px;
   }
   .tab-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -64,17 +64,19 @@
     position: relative; display: flex; align-items: center;
   }
   .input-group input {
-    width: 100%; padding: 12px 14px; border: 0; border-bottom: 1px solid var(--border);
+    width: 100%; padding: 12px 40px 12px 14px; border: 0; border-bottom: 1px solid var(--border);
     font-size: 16px; outline: none; text-align: right; background: transparent;
   }
   .input-group input:focus { border-bottom-color: var(--primary); }
   
+  /* أيقونة جهات الاتصال في اليمين تماماً داخل الحقل */
   .contact-icon {
     position: absolute; right: 4px; background: none; border: 0; cursor: pointer;
     display: grid; place-items: center;
   }
-  .contact-icon svg { width: 28px; height: 28px; stroke: var(--yellow); fill: none; stroke-width: 2; }
+  .contact-icon svg { width: 26px; height: 26px; stroke: var(--yellow); fill: none; stroke-width: 2; }
 
+  /* زر الإرسال السفلي الأصفر بالكامل */
   .submit-btn {
     background: var(--yellow); color: #fff; border: 0; padding: 16px;
     font-size: 18px; font-weight: 700; cursor: pointer; width: 100%;
@@ -94,23 +96,23 @@
       <div style="width: 24px;"></div>
     </div>
 
-    <!-- الترتيب الصحيح من اليمين: رقم الهاتف (نشط)، اسم المستخدم، بنك، فيسبوك -->
+    <!-- الترتيب المطابق للصورة الأصلية من اليمين لليسار: فيسبوك، بنك، اسم المستخدم، رقم الهاتف (نشط) -->
     <nav class="tabs-nav">
-      <div class="tab-item active" onclick="alert('رقم الهاتف')">
-        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-        رقم الهاتف
-      </div>
-      <div class="tab-item" onclick="alert('اسم المستخدم')">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        اسم المستخدم
+      <div class="tab-item" onclick="alert('فيسبوك')">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        فيسبوك
       </div>
       <div class="tab-item" onclick="alert('بنك')">
         <svg viewBox="0 0 32 32"><path d="M3 10h26M16 4l14 8H2l14-8zM5 14h22v12H5zM9 18h2v4H9zM15 18h2v4h-2zM21 18h2v4h-2z"/></svg>
         بنك
       </div>
-      <div class="tab-item" onclick="alert('فيسبوك')">
-        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        فيسبوك
+      <div class="tab-item" onclick="alert('اسم المستخدم')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        اسم المستخدم
+      </div>
+      <div class="tab-item active" onclick="alert('رقم الهاتف')">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+        رقم الهاتف
       </div>
     </nav>
   </header>
